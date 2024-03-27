@@ -12,6 +12,17 @@
       <FILE id="ejp4HT" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="hUuzoD" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <GROUP id="{36BA768F-9E09-F379-A3AC-1D16CD30CA98}" name="DSP">
+        <FILE id="rvRo4K" name="Biquad.cpp" compile="1" resource="0" file="Source/DSP/Biquad.cpp"/>
+        <FILE id="Hga3gu" name="Biquad.h" compile="0" resource="0" file="Source/DSP/Biquad.h"/>
+        <FILE id="aNIL0L" name="PeakCompressor.cpp" compile="1" resource="0"
+              file="Source/DSP/PeakCompressor.cpp"/>
+        <FILE id="ISjqO2" name="PeakCompressor.h" compile="0" resource="0"
+              file="Source/DSP/PeakCompressor.h"/>
+        <FILE id="zJpvYc" name="RMSCompressor.cpp" compile="1" resource="0"
+              file="Source/DSP/RMSCompressor.cpp"/>
+        <FILE id="SBGUs7" name="RMSCompressor.h" compile="0" resource="0" file="Source/DSP/RMSCompressor.h"/>
+      </GROUP>
     </GROUP>
   </MAINGROUP>
   <MODULES>
