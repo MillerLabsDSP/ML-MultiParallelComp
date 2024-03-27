@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Biquad.h"
 
 //==============================================================================
 /**
@@ -54,6 +55,13 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    
+    // Filter bank #1
+    Biquad LPF1;
+
+    // Filter bank #3
+    Biquad HPF1;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MLMultiParallelCompAudioProcessor)
 };

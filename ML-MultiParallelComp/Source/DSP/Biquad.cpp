@@ -9,8 +9,6 @@
 
 #include "Biquad.h"
 
-
-
 // Define the functions of Biquad
 void Biquad::processBuffer(float * samples, const int numSamples, const int channel)
 {
