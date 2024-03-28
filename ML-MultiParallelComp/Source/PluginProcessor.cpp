@@ -93,7 +93,7 @@ void MLMultiParallelCompAudioProcessor::changeProgramName (int index, const juce
 //==============================================================================
 void MLMultiParallelCompAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-
+    filter.prepare(sampleRate);
 }
 
 void MLMultiParallelCompAudioProcessor::releaseResources()
@@ -135,17 +135,18 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     
     auto numSamples = buffer.getNumSamples();
+    
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
     
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-        
-        
-        
-    }
+        for (int channel = 0; channel < totalNumInputChannels; ++channel) {
+            
+            auto* channelData = buffer.getWritePointer (channel);
+            
+            filter.setUserFreq(1000.f);
+            filter.processBuffer(channelData, numSamples, channel);
+            
+        }
 }
 
 //==============================================================================

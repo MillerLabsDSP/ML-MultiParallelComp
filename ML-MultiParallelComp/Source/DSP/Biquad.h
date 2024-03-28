@@ -40,11 +40,11 @@ public:
 
     Biquad() {};
     Biquad(FilterType filterType, float Q) : filterType(filterType), Q(Q) {};
-    ~Biquad() {};
+    virtual ~Biquad() {};
 
     // Functions for Biquad Filter
-    void processBuffer(float * samples, const int numSamples, const int channel);
-        
+    virtual void processBuffer(float * samples, const int numSamples, const int channel);
+    
     float processSample(float x, int channel);
 
     void setFs(float Fs);
@@ -63,7 +63,9 @@ public:
     {
         this->filterType = filterTypeParam;
     }
-
+    
+    void updateCoefficients();
+    
 private:
     FilterType filterType = LPF;
 
@@ -94,5 +96,4 @@ private:
     float a1 = 0.0f;
     float a2 = 0.0f;
 
-    void updateCoefficients();
 };
