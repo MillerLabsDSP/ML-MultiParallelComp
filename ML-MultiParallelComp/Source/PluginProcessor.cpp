@@ -22,9 +22,10 @@ MLMultiParallelCompAudioProcessor::MLMultiParallelCompAudioProcessor()
                        )
 #endif
 {
+    
+    
 }
-
-MLMultiParallelCompAudioProcessor::~MLMultiParallelCompAudioProcessor()
+    MLMultiParallelCompAudioProcessor::~MLMultiParallelCompAudioProcessor()
 {
 }
 
@@ -93,7 +94,9 @@ void MLMultiParallelCompAudioProcessor::changeProgramName (int index, const juce
 //==============================================================================
 void MLMultiParallelCompAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    filter.prepare(sampleRate);
+    
+
+    
 }
 
 void MLMultiParallelCompAudioProcessor::releaseResources()
@@ -109,10 +112,7 @@ bool MLMultiParallelCompAudioProcessor::isBusesLayoutSupported (const BusesLayou
     juce::ignoreUnused (layouts);
     return true;
   #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    // Some plugin hosts, such as certain GarageBand versions, will only
-    // load plugins that support stereo bus layouts.
+
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
      && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
@@ -133,20 +133,45 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
+        
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear (i, 0, buffer.getNumSamples());
     
     auto numSamples = buffer.getNumSamples();
     
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    // copy input buffer for LPF1 processing
+    // process in place for LPF2 (save)
+    
+
+    
+    // copy input buffer for LPF1 processing
+    // process in place for LPF2 (save)
+    
+    
+    /* COMPRESSION PARAMETERS */
+    
+    // Compression (low band)
+//            peakCompressor.setThreshold_band1(-20.f);
+//            peakCompressor.setRatio_band1(10.f);
+//            peakCompressor.setKnee_band1(1.f);
+//            peakCompressor.setAttack_band1(0.1f);
+//            peakCompressor.setRelease_band1(0.05f);
+//
+    // Compression (high band)
+//            peakCompressor.setThreshold_band2(-5.f);
+//            peakCompressor.setRatio_band2(4.f);
+//            peakCompressor.setKnee_band2(1.f);
+//            peakCompressor.setAttack_band2(0.1f);
+//            peakCompressor.setRelease_band2(0.05f);
+    
     
         for (int channel = 0; channel < totalNumInputChannels; ++channel) {
             
             auto* channelData = buffer.getWritePointer (channel);
-            
-            filter.setUserFreq(1000.f);
-            filter.processBuffer(channelData, numSamples, channel);
-            
+
+
         }
+
 }
 
 //==============================================================================
@@ -180,3 +205,5 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new MLMultiParallelCompAudioProcessor();
 }
+
+
