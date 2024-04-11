@@ -59,7 +59,7 @@ public:
     
 private:
     
-    MultibandProcessor          processor;
+    MultibandProcessor          mbProcessor;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MLMultiParallelCompAudioProcessor)

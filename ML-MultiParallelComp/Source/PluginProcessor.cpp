@@ -94,9 +94,7 @@ void MLMultiParallelCompAudioProcessor::changeProgramName (int index, const juce
 //==============================================================================
 void MLMultiParallelCompAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    
-
-    
+    mbProcessor.prepareToPlay(sampleRate);
 }
 
 void MLMultiParallelCompAudioProcessor::releaseResources()
@@ -139,7 +137,7 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     
     auto numSamples = buffer.getNumSamples();
     
-    
+    mbProcessor.setCutoffFrequency(1000.f);
     
     /* COMPRESSION PARAMETERS */
     
@@ -158,13 +156,12 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
 //            peakCompressor.setRelease_band2(0.05f);
     
     
-        for (int channel = 0; channel < totalNumInputChannels; ++channel) {
+    for (int channel = 0; channel < totalNumInputChannels; ++channel) {
             
-            auto* channelData = buffer.getWritePointer (channel);
-            
-            processor.processBuffer(channelData, numSamples, channel);
+        auto* channelData = buffer.getWritePointer (channel);
+        mbProcessor.processBuffer(channelData, numSamples, channel);
 
-        }
+    }
 
 }
 

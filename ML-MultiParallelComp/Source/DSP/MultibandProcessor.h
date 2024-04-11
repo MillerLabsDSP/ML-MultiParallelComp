@@ -17,6 +17,13 @@
 class MultibandProcessor : public Biquad,
                            public PeakCompressor {
 public:
+                               
+    void setCutoffFrequency(float cutoff) {
+        LPF1.setFreq(cutoff);
+        LPF2.setFreq(cutoff);
+        HPF1.setFreq(cutoff);
+        HPF2.setFreq(cutoff);
+    }
         
     float processSampleLPF(float x, int channel) {
         float a = LPF1.processSample(x, channel);
@@ -33,8 +40,8 @@ public:
     void processBuffer(float * samples, const int numSamples, const int channel)
     {
         updateCoefficients();
-        // Perform the processing
         for (int n = 0; n < numSamples ; n++){
+            
             float x = samples[n];
             
             float LinkwitzLPFBuffer = processSampleLPF(x, channel);
@@ -43,7 +50,7 @@ public:
 //            float compLowBand = PeakCompressor::processSample(LinkwitzLPFBuffer, channel, T_band1, R_band1, W_band1, alphaA_band1, alphaR_band1);
 //            float compHighBand = PeakCompressor::processSample(LinkwitzHPFBuffer, channel, T_band2, R_band2, W_band2, alphaA_band2, alphaR_band2);
             
-            samples[n] = (1/2) * (LinkwitzLPFBuffer + LinkwitzHPFBuffer); // for debug
+            samples[n] = LinkwitzLPFBuffer + LinkwitzHPFBuffer; // for debug
 //            samples[n] = compLowBand + compHighBand;
             
         }
