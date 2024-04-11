@@ -15,6 +15,8 @@
       <GROUP id="{36BA768F-9E09-F379-A3AC-1D16CD30CA98}" name="DSP">
         <FILE id="rvRo4K" name="Biquad.cpp" compile="1" resource="0" file="Source/DSP/Biquad.cpp"/>
         <FILE id="Hga3gu" name="Biquad.h" compile="0" resource="0" file="Source/DSP/Biquad.h"/>
+        <FILE id="ASeFhQ" name="SoftClip.cpp" compile="1" resource="0" file="Source/DSP/SoftClip.cpp"/>
+        <FILE id="HsOnT6" name="SoftClip.h" compile="0" resource="0" file="Source/DSP/SoftClip.h"/>
         <FILE id="gViJl9" name="MultibandProcessor.cpp" compile="1" resource="0"
               file="Source/DSP/MultibandProcessor.cpp"/>
         <FILE id="vSN4HV" name="MultibandProcessor.h" compile="0" resource="0"
