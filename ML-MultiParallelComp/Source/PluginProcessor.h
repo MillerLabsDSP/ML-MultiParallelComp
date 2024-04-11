@@ -59,13 +59,7 @@ public:
     
 private:
     
-    Biquad                  LPF1 {Biquad::FilterType::LPF, 0.7071},
-                            LPF2 {Biquad::FilterType::LPF, 0.7071},
-                            HPF1 {Biquad::FilterType::HPF, 0.7071},
-                            HPF2 {Biquad::FilterType::HPF, 0.7071},
-                            mbProcessor;
-    
-    PeakCompressor          compressor;
+    MultibandProcessor          processor;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MLMultiParallelCompAudioProcessor)

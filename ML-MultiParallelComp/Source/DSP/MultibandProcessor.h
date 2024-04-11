@@ -10,20 +10,68 @@
 
 #pragma once
 #include <vector>
-#include <JuceHeader.h>
 #include "Biquad.h"
+#include "PeakCompressor.h"
+#include <JuceHeader.h>
 
-class MultibandProcessor {
+class MultibandProcessor : public Biquad,
+                           public PeakCompressor {
 public:
         
-    void process(juce::AudioBuffer<float>) {
-        
+    float processSampleLPF(float x, int channel) {
+        float a = LPF1.processSample(x, channel);
+        float b = LPF2.processSample(a, channel);
+        return b;
     }
     
+    float processSampleHPF(float x, int channel) {
+        float c = HPF1.processSample(x, channel);
+        float d = HPF2.processSample(c, channel);
+        return d;
+    }
+    
+    void processBuffer(float * samples, const int numSamples, const int channel)
+    {
+        updateCoefficients();
+        // Perform the processing
+        for (int n = 0; n < numSamples ; n++){
+            float x = samples[n];
+            
+            float LinkwitzLPFBuffer = processSampleLPF(x, channel);
+            float LinkwitzHPFBuffer = processSampleHPF(x, channel);
+            
+//            float compLowBand = PeakCompressor::processSample(LinkwitzLPFBuffer, channel, T_band1, R_band1, W_band1, alphaA_band1, alphaR_band1);
+//            float compHighBand = PeakCompressor::processSample(LinkwitzHPFBuffer, channel, T_band2, R_band2, W_band2, alphaA_band2, alphaR_band2);
+            
+            samples[n] = (1/2) * (LinkwitzLPFBuffer + LinkwitzHPFBuffer); // for debug
+//            samples[n] = compLowBand + compHighBand;
+            
+        }
+    }
     
 private:
     
+    Biquad LPF1 {Biquad::FilterType::LPF, 0.7071},
+           LPF2 {Biquad::FilterType::LPF, 0.7071},
+           HPF1 {Biquad::FilterType::HPF, 0.7071},
+           HPF2 {Biquad::FilterType::HPF, 0.7071};
+                         
+    /* Compressor parameters for individual bands */
     
+    float T_band1 = 0.f;
+    float T_band2 = 0.f;
+                               
+    float R_band1 = 0.f;
+    float R_band2 = 0.f;
+                               
+    float W_band1 = 0.f;
+    float W_band2 = 0.f;
+                               
+    float alphaA_band1 = 0.f;
+    float alphaA_band2 = 0.f;
+                               
+    float alphaR_band1 = 0.f;
+    float alphaR_band2 = 0.f;
     
 };
     

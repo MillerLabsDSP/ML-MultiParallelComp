@@ -139,13 +139,6 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     
     auto numSamples = buffer.getNumSamples();
     
-    // copy input buffer for LPF1 processing
-    // process in place for LPF2 (save)
-    
-
-    
-    // copy input buffer for LPF1 processing
-    // process in place for LPF2 (save)
     
     
     /* COMPRESSION PARAMETERS */
@@ -168,7 +161,8 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
         for (int channel = 0; channel < totalNumInputChannels; ++channel) {
             
             auto* channelData = buffer.getWritePointer (channel);
-
+            
+            processor.processBuffer(channelData, numSamples, channel);
 
         }
 
