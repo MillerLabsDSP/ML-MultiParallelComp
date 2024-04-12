@@ -79,19 +79,26 @@ public:
                                
     float processLCompSample(float x, int channel, float T_band1, float R_band1, float W_band1, float alphaA_band1, float alphaR_band1) {
         
-        // Band 1 compression
-        if (x > T_band1 + (W_band1/2)) {
-            // Above knee curve, compress
-            gainSC_band1 = T_band1 + (x - T_band1)/R_band1;
-        } else if (x > (T_band1 - W_band1/2)) {
-            // Within knee curve, compress
-            gainSC_band1 = x + ((1/R_band1 - 1) * pow((x - T_band1 + W_band1/2),2))/(2*W_band1);
-        } else {
-            // Do not compress
-            gainSC_band1 = x;
+        // Convert to unipolar
+        float x_dB = 20*log10(abs(x));
+        
+        if (x_dB < -96.f) {
+            x_dB = -96.f; // ensure no values of -inf
         }
         
-        auto gainChange_band1 = gainSC_band1 - x; // store gain change at "n" sample pos
+        // Band 1 compression
+        if (x_dB > T_band1 + (W_band1/2)) {
+            // Above knee curve, compress
+            gainSC_band1 = T_band1 + (x_dB - T_band1)/R_band1;
+        } else if (x_dB > (T_band1 - W_band1/2)) {
+            // Within knee curve, compress
+            gainSC_band1 = x_dB + ((1/R_band1 - 1) * pow((x_dB - T_band1 + W_band1/2),2))/(2*W_band1);
+        } else {
+            // Do not compress
+            gainSC_band1 = x_dB;
+        }
+        
+        auto gainChange_band1 = gainSC_band1 - x_dB; // store gain change at "n" sample pos
         
         if (gainChange_band1 < gainSmoothPrev_band1) {
             // Attack mode
@@ -111,19 +118,26 @@ public:
     
     float processHCompSample(float x, int channel, float T_band2, float R_band2, float W_band2, float alphaA_band2, float alphaR_band2) {
         
-        // Band 2 compression
-        if (x > T_band2 + (W_band1/2)) {
-            // Above knee curve, compress
-            gainSC_band2 = T_band2 + (x - T_band2)/R_band2;
-        } else if (x > (T_band2 - W_band2/2)) {
-            // Within knee curve, compress
-            gainSC_band2 = x + ((1/R_band2 - 1) * pow((x - T_band2 + W_band2/2),2))/(2*W_band2);
-        } else {
-            // Do not compress
-            gainSC_band2 = x;
+        // Convert to unipolar
+        float x_dB = 20*log10(abs(x));
+        
+        if (x_dB < -96.f) {
+            x_dB = -96.f; // ensure no values of -inf
         }
         
-        auto gainChange_band2 = gainSC_band2 - x; // store gain change at "n" sample pos
+        // Band 2 compression
+        if (x_dB > T_band2 + (W_band1/2)) {
+            // Above knee curve, compress
+            gainSC_band2 = T_band2 + (x_dB - T_band2)/R_band2;
+        } else if (x_dB > (T_band2 - W_band2/2)) {
+            // Within knee curve, compress
+            gainSC_band2 = x_dB + ((1/R_band2 - 1) * pow((x_dB - T_band2 + W_band2/2),2))/(2*W_band2);
+        } else {
+            // Do not compress
+            gainSC_band2 = x_dB;
+        }
+        
+        auto gainChange_band2 = gainSC_band2 - x_dB; // store gain change at "n" sample pos
         
         if (gainChange_band2 < gainSmoothPrev_band2) {
             // Attack mode
@@ -151,8 +165,8 @@ public:
             float LinkwitzLPFBuffer = processSampleLPF(x, channel);
             float LinkwitzHPFBuffer = processSampleHPF(x, channel);
             
-            float compLowBand = PeakCompressor::processSample(LinkwitzLPFBuffer, channel, T_band1, R_band1, W_band1, alphaA_band1, alphaR_band1);
-            float compHighBand = PeakCompressor::processSample(LinkwitzHPFBuffer, channel, T_band2, R_band2, W_band2, alphaA_band2, alphaR_band2);
+            float compLowBand = processLCompSample(LinkwitzLPFBuffer, channel, T_band1, R_band1, W_band1, alphaA_band1, alphaR_band1);
+            float compHighBand = processHCompSample(LinkwitzHPFBuffer, channel, T_band2, R_band2, W_band2, alphaA_band2, alphaR_band2);
             
 //            samples[n] = LinkwitzLPFBuffer // bypass high band
 //            samples[n] = LinkwitzHPFBuffer // bypass low band
