@@ -199,6 +199,54 @@ void MLMultiParallelCompAudioProcessorEditor::resized()
 
 }
 
+void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
+    
+    if (slider == &cutoff) {
+        audioProcessor.cutoffVal = cutoff.getValue();
+    }
+    
+    if (slider == &threshold_band1) {
+        audioProcessor.thresholdBand1 = threshold_band1.getValue();
+    }
+    
+    if (slider == &threshold_band2) {
+        audioProcessor.thresholdBand2 = threshold_band2.getValue();
+    }
+    
+    if (slider == &ratio_band1) {
+        audioProcessor.ratioBand1 = ratio_band1.getValue();
+    }
+    
+    if (slider == &ratio_band2) {
+        audioProcessor.ratioBand2 = ratio_band2.getValue();
+    }
+    
+    if (slider == &knee_band1) {
+        audioProcessor.kneeBand1 = knee_band1.getValue();
+    }
+    
+    if (slider == &knee_band2) {
+        audioProcessor.kneeBand2 = knee_band2.getValue();
+    }
+    
+    if (slider == &attack_band1) {
+        audioProcessor.attackBand1 = attack_band1.getValue();
+    }
+    
+    if (slider == &attack_band2) {
+        audioProcessor.attackBand2 = attack_band2.getValue();
+    }
+    
+    if (slider == &release_band1) {
+        audioProcessor.releaseBand1 = release_band1.getValue();
+    }
+    
+    if (slider == &release_band2) {
+        audioProcessor.releaseBand2 = release_band2.getValue();
+    }
+    
+}
+
 //void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider * slider) {
 //    if (slider == &freqSlider) {
 //        audioProcessor.filterFrequency = freqSlider.getValue();

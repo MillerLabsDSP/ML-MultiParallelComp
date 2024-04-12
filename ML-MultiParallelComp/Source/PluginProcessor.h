@@ -57,6 +57,23 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     //==============================================================================
     
+    float cutoffVal = 1000.f;
+    
+    float thresholdBand1 = 0.f;
+    float thresholdBand2 = 0.f;
+    
+    float ratioBand1 = 1.f;
+    float ratioBand2 = 1.f;
+    
+    float kneeBand1 = 0.f;
+    float kneeBand2 = 0.f;
+    
+    float attackBand1 = 0.f;
+    float attackBand2 = 0.f;
+    
+    float releaseBand1 = 0.f;
+    float releaseBand2 = 0.f;
+    
 private:
     
     MultibandProcessor          mbProcessor;

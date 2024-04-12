@@ -137,23 +137,23 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     
     auto numSamples = buffer.getNumSamples();
     
-    mbProcessor.setCutoffFrequency(1000.f);
+    mbProcessor.setCutoffFrequency(cutoffVal);
     
     /* COMPRESSION PARAMETERS */
     
      // Compression (low band)
-    mbProcessor.setThreshold_band1(-20.f);
-    mbProcessor.setRatio_band1(10.f);
-    mbProcessor.setKnee_band1(1.f);
-    mbProcessor.setAttack_band1(0.1f);
-    mbProcessor.setRelease_band1(0.05f);
+    mbProcessor.setThreshold_band1(thresholdBand1);
+    mbProcessor.setRatio_band1(ratioBand1);
+    mbProcessor.setKnee_band1(kneeBand1);
+    mbProcessor.setAttack_band1(attackBand1);
+    mbProcessor.setRelease_band1(releaseBand1);
 
      // Compression (high band)
-    mbProcessor.setThreshold_band2(-5.f);
-    mbProcessor.setRatio_band2(4.f);
-    mbProcessor.setKnee_band2(1.f);
-    mbProcessor.setAttack_band2(0.1f);
-    mbProcessor.setRelease_band2(0.05f);
+    mbProcessor.setThreshold_band2(thresholdBand2);
+    mbProcessor.setRatio_band2(ratioBand2);
+    mbProcessor.setKnee_band2(kneeBand2);
+    mbProcessor.setAttack_band2(attackBand2);
+    mbProcessor.setRelease_band2(releaseBand2);
     
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel) {
