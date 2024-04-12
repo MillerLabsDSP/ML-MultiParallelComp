@@ -21,7 +21,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     threshold_band1.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     threshold_band1.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(threshold_band1);
-//    threshold_band1.addListener(this);
+    threshold_band1.addListener(this);
     
     addAndMakeVisible(threshold_band1_label);
     threshold_band1_label.setText("Threshold (dB)", juce::dontSendNotification);
@@ -33,7 +33,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     threshold_band2.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     threshold_band2.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(threshold_band2);
-//    threshold_band2.addListener(this);
+    threshold_band2.addListener(this);
     
     addAndMakeVisible(threshold_band2_label);
     threshold_band2_label.setText("Threshold (dB)", juce::dontSendNotification);
@@ -45,7 +45,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     ratio_band1.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     ratio_band1.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(ratio_band1);
-//    ratio_band1.addListener(this);
+    ratio_band1.addListener(this);
     
     addAndMakeVisible(ratio_band1_label);
     ratio_band1_label.setText("Ratio", juce::dontSendNotification);
@@ -57,7 +57,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     ratio_band2.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     ratio_band2.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(ratio_band2);
-//    ratio_band2.addListener(this);
+    ratio_band2.addListener(this);
     
     addAndMakeVisible(ratio_band2_label);
     ratio_band2_label.setText("Ratio", juce::dontSendNotification);
@@ -69,7 +69,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     knee_band1.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     knee_band1.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(knee_band1);
-//    knee_band1.addListener(this);
+    knee_band1.addListener(this);
     
     addAndMakeVisible(knee_band1_label);
     knee_band1_label.setText("Knee", juce::dontSendNotification);
@@ -81,7 +81,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     knee_band2.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     knee_band2.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(knee_band2);
-//    knee_band2.addListener(this);
+    knee_band2.addListener(this);
     
     addAndMakeVisible(knee_band2_label);
     knee_band2_label.setText("Knee", juce::dontSendNotification);
@@ -93,7 +93,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     attack_band1.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     attack_band1.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(attack_band1);
-//    attack_band1.addListener(this);
+    attack_band1.addListener(this);
     
     addAndMakeVisible(attack_band1_label);
     attack_band1_label.setText("Attack", juce::dontSendNotification);
@@ -105,7 +105,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     attack_band2.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     attack_band2.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(attack_band2);
-//    attack_band2.addListener(this);
+    attack_band2.addListener(this);
     
     addAndMakeVisible(knee_band2_label);
     attack_band2_label.setText("Attack", juce::dontSendNotification);
@@ -117,7 +117,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     release_band1.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     release_band1.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(release_band1);
-//    attack_band1.addListener(this);
+    attack_band1.addListener(this);
     
     addAndMakeVisible(release_band1_label);
     release_band1_label.setText("Release", juce::dontSendNotification);
@@ -129,7 +129,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     release_band2.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     release_band2.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 75, 25);
     addAndMakeVisible(release_band2);
-//    release_band2.addListener(this);
+    release_band2.addListener(this);
     
     addAndMakeVisible(release_band2_label);
     release_band2_label.setText("Release", juce::dontSendNotification);
@@ -141,7 +141,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     cutoff.setSliderStyle(juce::Slider::SliderStyle::LinearBarVertical);
     cutoff.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 200, 150);
     addAndMakeVisible(cutoff);
-//    cutoff.addListener(this);
+    cutoff.addListener(this);
     
     clipDrive_label.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(cutoff_label);
@@ -247,16 +247,3 @@ void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider *s
     
 }
 
-//void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider * slider) {
-//    if (slider == &freqSlider) {
-//        audioProcessor.filterFrequency = freqSlider.getValue();
-//    }
-//    
-//    if (slider == &qSlider) {
-//        audioProcessor.filterQ = qSlider.getValue();
-//    }
-//    
-//    if (slider == &ampSlider) {
-//        audioProcessor.filterQ = ampSlider.getValue();
-//    }
-//}
