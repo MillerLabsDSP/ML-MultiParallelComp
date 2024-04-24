@@ -9,6 +9,6 @@
 */
 
 #pragma once
-#include <vector>
+#include <JuceHeader.h>
 
-void processSoftClip(std::vector<float> & input, std::vector<float> & output);
+float processSample(float x, int channel, float gain);

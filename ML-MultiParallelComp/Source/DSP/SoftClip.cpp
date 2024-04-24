@@ -14,18 +14,14 @@
 class SoftClip {
 public:
     
-    void processSoftClip(std::vector<float> & input, std::vector<float> & output) {
-        
-        unsigned long int N = input.size();
-        
-        for(int n = 0; n < N; ++n) {
-            float x = input[n];
-            output[n] = x - ( (1/3) * pow(x,3) ) + ( (1/5) * pow(x,5) );
-        }
+    float processSample(float x, int channel, float drive) {
+        float xGain = x * drive;
+        float y = x - ( (1/3) * pow(xGain,3) ) + ( (1/5) * pow(xGain,5) );
+        return y;
     }
     
 private:
     
-    
+    float xGain = 1;
     
 };
