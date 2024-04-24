@@ -14,11 +14,7 @@
 class SoftClip {
 public:
     
-    float processSample(float x, int channel, float drive) {
-        float xGain = x * drive;
-        float y = x - ( (1/3) * pow(xGain,3) ) + ( (1/5) * pow(xGain,5) );
-        return y;
-    }
+    
     
 private:
     
