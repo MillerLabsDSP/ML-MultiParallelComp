@@ -68,6 +68,13 @@ private:
     juce::Slider release_band3;
     juce::Label  release_band3_label;
     
+    juce::Slider parallel_band1;
+    juce::Label  parallel_band1_label;
+    juce::Slider parallel_band2;
+    juce::Label  parallel_band2_label;
+    juce::Slider parallel_band3;
+    juce::Label  parallel_band3_label;
+    
     juce::Slider lowCutoff;
     juce::Label  lowCutoff_label;
     juce::Slider highCutoff;

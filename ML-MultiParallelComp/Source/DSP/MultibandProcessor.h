@@ -19,11 +19,11 @@ class MultibandProcessor : public Biquad, public PeakCompressor {
 public:
     
     void setDrive(float drive) {
-        this->xGain = drive;
+        this->drive = drive;
     }
     
-    float processSample(float x, int channel, float drive) {
-        xGain = x * drive;
+    float processSample_SoftClip(float x, float drive) {
+        float xGain = x * drive;
         float y = x - ( (1/3) * pow(xGain,3) ) + ( (1/5) * pow(xGain,5) );
         return y;
     }
@@ -264,14 +264,15 @@ public:
 //            samples[n] = LinkwitzHPFBuffer // bypass low band
 //            samples[n] = LinkwitzLPFBuffer + LinkwitzHPFBuffer; // bypass compression
             
-            samples[n] = comp1Band + comp2Band + comp3Band;
+            float sumBands = comp1Band + comp2Band + comp3Band;
+            samples[n] = processSample_SoftClip(sumBands, drive);
             
         }
     }
     
 private:
     
-    float xGain = 1.f;
+    float drive = 1.f;
 
     float Fs = 48000.f;
     float Q = 0.7071;
