@@ -26,14 +26,27 @@ public:
         this->clipperThreshold = clipperThreshold;
     }
     
-    float processSample_SoftClip(float x, float drive, float clipperThreshold) {
-        float xGain = x * drive;
-        if (xGain >= clipperThreshold) {
-            float y = x - ( (1/3) * pow(xGain,3) ) + ( (1/5) * pow(xGain,5) );
-            return y;
-        } else {
-            return xGain;
+    float processSample_SoftClip(float x, float drive) {
+        
+        // Diode pair emulation
+        
+        float fVd = 2*Is*sinh(Vd/etaVt) + Vd/R - x/R;
+        
+        float count = 0;
+        while ((abs(fVd) > TOL) && (count<5)) {
+            
+            float der = 2*Is/etaVt * cosh(Vd/etaVt) + 1/R;
+            Vd = Vd - fVd/der; // update guess
+            fVd = 2*Is*sinh(Vd/etaVt) + Vd/R - x/R;
+            count += 1;
+            
         }
+        
+        float Vout = Vd;
+        float y = Vout;
+        
+        return y;
+        
     }
     
     void setThreshold_band1(float threshold) {
@@ -268,12 +281,17 @@ public:
             float comp2Band = process2CompSample(Linkwitz2Buffer, channel, T_band2, R_band2, W_band2, alphaA_band2, alphaR_band2);
             float comp3Band = process3CompSample(Linkwitz3Buffer, channel, T_band3, R_band3, W_band3, alphaA_band3, alphaR_band3);
             
-//            samples[n] = LinkwitzLPFBuffer // bypass high band
-//            samples[n] = LinkwitzHPFBuffer // bypass low band
-//            samples[n] = LinkwitzLPFBuffer + LinkwitzHPFBuffer; // bypass compression
+            //            samples[n] = LinkwitzLPFBuffer // bypass high band
+            //            samples[n] = LinkwitzHPFBuffer // bypass low band
+            //            samples[n] = LinkwitzLPFBuffer + LinkwitzHPFBuffer; // bypass compression
             
             float sumBands = comp1Band + comp2Band + comp3Band;
-            samples[n] = processSample_SoftClip(sumBands, drive, clipperThreshold);
+            
+            if (clip == true) {
+                samples[n] = processSample_SoftClip(sumBands, drive);
+            } else {
+                samples[n] = sumBands;
+            }
             
         }
     }
@@ -282,9 +300,21 @@ private:
     
     float drive = 1.f;
     float clipperThreshold = 1.f; // linear
+    
+    // Diode pair soft clip parameters
+    float Is = 10e-9;
+    float Vt = 0.026;
+    float eta = 2;
+    float etaVt = eta*Vt;
+    float R = 1e3;
+    float Vd = 0;
+    
+    float TOL = 1e-10; // diode guess tolerance
 
     float Fs = 48000.f;
     float Q = 0.7071;
+    
+    bool clip = false;
     
     Biquad LPF1 {Biquad::FilterType::LPF, Q},
            LPF2 {Biquad::FilterType::LPF, Q},
