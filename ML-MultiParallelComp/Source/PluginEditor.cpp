@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <cmath>
 
 //==============================================================================
 MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor (MLMultiParallelCompAudioProcessor& p)
@@ -58,57 +59,80 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     addAndMakeVisible(threshold_band1);
     threshold_band1.addListener(this);
     
-//    addAndMakeVisible(threshold_band1_label);
-//    threshold_band1_label.setText("Threshold (dB)", juce::dontSendNotification);
-//    threshold_band1_label.attachToComponent(&threshold_band1, true);
-    
     // Ratio slider (band #1)
+    ratio_band1.textFromValueFunction = [](float value)
+    {
+        float ratio = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return juce::String(ratio) + ":1";
+    };
+    
+    ratio_band1.valueFromTextFunction = [](const juce::String &text)
+    {
+        float ratio = text.removeCharacters(":1").getFloatValue();
+        return ratio;
+    };
+    
     ratio_band1.setBounds(110, 170, 160, 25);
-    ratio_band1.setRange(1, 10);
+    ratio_band1.setRange(1, 100);
     ratio_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    ratio_band1.setTextBoxStyle(juce::Slider::NoTextBox, false, 75, 25);
+    ratio_band1.setSkewFactorFromMidPoint(10.f);
+    ratio_band1.setNumDecimalPlacesToDisplay(1);
     addAndMakeVisible(ratio_band1);
     ratio_band1.addListener(this);
     
-//    addAndMakeVisible(ratio_band1_label);
-//    ratio_band1_label.setText("Ratio", juce::dontSendNotification);
-//    ratio_band1_label.attachToComponent(&ratio_band1, true);
-    
     // Knee slider (band #1)
+    knee_band1.textFromValueFunction = [](float value)
+    {
+        float knee = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Knee: " + juce::String(knee) + " dB";
+    };
+    
+    knee_band1.valueFromTextFunction = [](const juce::String &text)
+    {
+        float knee = text.removeCharacters("Knee: dB").getFloatValue();
+        return knee;
+    };
     knee_band1.setBounds(110, 205, 160, 25);
     knee_band1.setRange(0, 6);
     knee_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    knee_band1.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(knee_band1);
     knee_band1.addListener(this);
     
-//    addAndMakeVisible(knee_band1_label);
-//    knee_band1_label.setText("Knee", juce::dontSendNotification);
-//    knee_band1_label.attachToComponent(&knee_band1, true);
-    
     // Attack slider (band #1)
+    attack_band1.textFromValueFunction = [](float value)
+    {
+        float attack = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Attack: " + juce::String(attack) + " ms";
+    };
+    
+    attack_band1.valueFromTextFunction = [](const juce::String &text)
+    {
+        float attack = text.removeCharacters("Attack: ms").getFloatValue();
+        return attack;
+    };
     attack_band1.setBounds(110, 240, 160, 25);
     attack_band1.setRange(0, 500);
     attack_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    attack_band1.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(attack_band1);
     attack_band1.addListener(this);
     
-//    addAndMakeVisible(attack_band1_label);
-//    attack_band1_label.setText("Attack", juce::dontSendNotification);
-//    attack_band1_label.attachToComponent(&attack_band1, true);
-    
     // Release slider (band #1)
+    release_band1.textFromValueFunction = [](float value)
+    {
+        float release = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Release: " + juce::String(release) + " ms";
+    };
+    
+    release_band1.valueFromTextFunction = [](const juce::String &text)
+    {
+        float release = text.removeCharacters("Release: ms").getFloatValue();
+        return release;
+    };
     release_band1.setBounds(110, 275, 160, 25);
     release_band1.setRange(0, 500);
     release_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    release_band1.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(release_band1);
     attack_band1.addListener(this);
-    
-//    addAndMakeVisible(release_band1_label);
-//    release_band1_label.setText("Release", juce::dontSendNotification);
-//    release_band1_label.attachToComponent(&release_band1, true);
     
     // Parallel blend slider (band #1)
     parallel_band1.setBounds(190, 50, 100, 100);
@@ -118,11 +142,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     parallel_band1.setNumDecimalPlacesToDisplay(2);
     addAndMakeVisible(parallel_band1);
     parallel_band1.addListener(this);
-    
-//    addAndMakeVisible(parallel_band1_label);
-//    parallel_band1_label.setText("Parallel", juce::dontSendNotification);
-//    parallel_band1_label.attachToComponent(&parallel_band1, false);
-    
+
     
     
     /* ---------------------------- */
@@ -140,58 +160,81 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     addAndMakeVisible(threshold_band2);
     threshold_band2.addListener(this);
     
-//    addAndMakeVisible(threshold_band2_label);
-//    threshold_band2_label.setText("Threshold (dB)", juce::dontSendNotification);
-//    threshold_band2_label.attachToComponent(&threshold_band2, true);
-    
     // Ratio slider (band #2)
+    ratio_band2.textFromValueFunction = [](float value)
+    {
+        float ratio = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return juce::String(ratio) + ":1";
+    };
+    
+    ratio_band2.valueFromTextFunction = [](const juce::String &text)
+    {
+        float ratio = text.removeCharacters(":1").getFloatValue();
+        return ratio;
+    };
+    
     ratio_band2.setBounds(330, 170, 160, 25);
-    ratio_band2.setRange(1, 10);
+    ratio_band2.setRange(1, 100);
     ratio_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    ratio_band2.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
+    ratio_band2.setSkewFactorFromMidPoint(10.f);
+    ratio_band2.setNumDecimalPlacesToDisplay(1);
     addAndMakeVisible(ratio_band2);
     ratio_band2.addListener(this);
     
-//    addAndMakeVisible(ratio_band2_label);
-//    ratio_band2_label.setText("Ratio", juce::dontSendNotification);
-//    ratio_band2_label.attachToComponent(&ratio_band2, true);
-    
     // Knee slider (band #2)
+    knee_band2.textFromValueFunction = [](float value)
+    {
+        float knee = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Knee: " + juce::String(knee) + " dB";
+    };
+    
+    knee_band2.valueFromTextFunction = [](const juce::String &text)
+    {
+        float knee = text.removeCharacters("Knee: dB").getFloatValue();
+        return knee;
+    };
     knee_band2.setBounds(330, 205, 160, 25);
     knee_band2.setRange(0, 6);
     knee_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    knee_band2.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(knee_band2);
     knee_band2.addListener(this);
     
-//    addAndMakeVisible(knee_band2_label);
-//    knee_band2_label.setText("Knee", juce::dontSendNotification);
-//    knee_band2_label.attachToComponent(&knee_band2, true);
-    
     // Attack slider (band #2)
+    attack_band2.textFromValueFunction = [](float value)
+    {
+        float attack = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Attack: " + juce::String(attack) + " ms";
+    };
+    
+    attack_band2.valueFromTextFunction = [](const juce::String &text)
+    {
+        float attack = text.removeCharacters("Attack: ms").getFloatValue();
+        return attack;
+    };
     attack_band2.setBounds(330, 240, 160, 25);
     attack_band2.setRange(0, 500);
     attack_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    attack_band2.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(attack_band2);
     attack_band2.addListener(this);
     
-//    addAndMakeVisible(attack_band2_label);
-//    attack_band2_label.setText("Attack", juce::dontSendNotification);
-//    attack_band2_label.attachToComponent(&attack_band2, true);
-    
     // Release slider (band #2)
+    release_band2.textFromValueFunction = [](float value)
+    {
+        float release = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Release: " + juce::String(release) + " ms";
+    };
+    
+    release_band2.valueFromTextFunction = [](const juce::String &text)
+    {
+        float release = text.removeCharacters("Release: ms").getFloatValue();
+        return release;
+    };
     release_band2.setBounds(330, 275, 160, 25);
     release_band2.setRange(0, 500);
     release_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    release_band2.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(release_band2);
     release_band2.addListener(this);
-    
-//    addAndMakeVisible(release_band2_label);
-//    release_band2_label.setText("Release", juce::dontSendNotification);
-//    release_band2_label.attachToComponent(&release_band2, true);
-  
+      
     // Parallel blend slider (band #2)
     parallel_band2.setBounds(410, 50, 100, 100);
     parallel_band2.setRange(0, 6);
@@ -200,10 +243,6 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     parallel_band2.setNumDecimalPlacesToDisplay(2);
     addAndMakeVisible(parallel_band2);
     parallel_band2.addListener(this);
-    
-//    addAndMakeVisible(parallel_band2_label);
-//    parallel_band2_label.setText("Parallel", juce::dontSendNotification);
-//    parallel_band2_label.attachToComponent(&parallel_band2, true);
     
     
     
@@ -222,58 +261,81 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     addAndMakeVisible(threshold_band3);
     threshold_band3.addListener(this);
     
-//    addAndMakeVisible(threshold_band2_label);
-//    threshold_band2_label.setText("Threshold (dB)", juce::dontSendNotification);
-//    threshold_band2_label.attachToComponent(&threshold_band2, true);
-    
     // Ratio slider (band #3)
+    ratio_band3.textFromValueFunction = [](float value)
+    {
+        float ratio = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return juce::String(ratio) + ":1";
+    };
+    
+    ratio_band3.valueFromTextFunction = [](const juce::String &text)
+    {
+        float ratio = text.removeCharacters(":1").getFloatValue();
+        return ratio;
+    };
+    
     ratio_band3.setBounds(550, 170, 160, 25);
-    ratio_band3.setRange(1, 10);
+    ratio_band3.setRange(1, 100);
     ratio_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    ratio_band3.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
+    ratio_band3.setSkewFactorFromMidPoint(10.f);
+    ratio_band3.setNumDecimalPlacesToDisplay(1);
     addAndMakeVisible(ratio_band3);
     ratio_band3.addListener(this);
     
-//    addAndMakeVisible(ratio_band2_label);
-//    ratio_band2_label.setText("Ratio", juce::dontSendNotification);
-//    ratio_band2_label.attachToComponent(&ratio_band2, true);
-    
     // Knee slider (band #3)
+    knee_band3.textFromValueFunction = [](float value)
+    {
+        float knee = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Knee: " + juce::String(knee) + " dB";
+    };
+    
+    knee_band3.valueFromTextFunction = [](const juce::String &text)
+    {
+        float knee = text.removeCharacters("Knee: dB").getFloatValue();
+        return knee;
+    };
     knee_band3.setBounds(550, 205, 160, 25);
     knee_band3.setRange(0, 6);
     knee_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    knee_band3.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(knee_band3);
     knee_band3.addListener(this);
     
-//    addAndMakeVisible(knee_band2_label);
-//    knee_band2_label.setText("Knee", juce::dontSendNotification);
-//    knee_band2_label.attachToComponent(&knee_band2, true);
-    
     // Attack slider (band #3)
+    attack_band3.textFromValueFunction = [](float value)
+    {
+        float attack = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Attack: " + juce::String(attack) + " ms";
+    };
+    
+    attack_band3.valueFromTextFunction = [](const juce::String &text)
+    {
+        float attack = text.removeCharacters("Attack: ms").getFloatValue();
+        return attack;
+    };
     attack_band3.setBounds(550, 240, 160, 25);
     attack_band3.setRange(0, 500);
     attack_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    attack_band3.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(attack_band3);
     attack_band3.addListener(this);
     
-//    addAndMakeVisible(attack_band2_label);
-//    attack_band2_label.setText("Attack", juce::dontSendNotification);
-//    attack_band2_label.attachToComponent(&attack_band2, true);
-    
     // Release slider (band #3)
+    release_band3.textFromValueFunction = [](float value)
+    {
+        float release = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return "Release: " + juce::String(release) + " ms";
+    };
+    
+    release_band3.valueFromTextFunction = [](const juce::String &text)
+    {
+        float release = text.removeCharacters("Release: ms").getFloatValue();
+        return release;
+    };
     release_band3.setBounds(550, 275, 160, 25);
     release_band3.setRange(0, 500);
     release_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
-    release_band3.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
     addAndMakeVisible(release_band3);
     release_band3.addListener(this);
-    
-//    addAndMakeVisible(release_band2_label);
-//    release_band2_label.setText("Release", juce::dontSendNotification);
-//    release_band2_label.attachToComponent(&release_band2, true);
-  
+
     // Parallel blend slider (band #3)
     parallel_band3.setBounds(630, 50, 100, 100);
     parallel_band3.setRange(0, 6);
@@ -282,10 +344,6 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     parallel_band3.setNumDecimalPlacesToDisplay(2);
     addAndMakeVisible(parallel_band3);
     parallel_band3.addListener(this);
-    
-//    addAndMakeVisible(parallel_band2_label);
-//    parallel_band2_label.setText("Parallel", juce::dontSendNotification);
-//    parallel_band2_label.attachToComponent(&parallel_band2, true);
     
     
     
@@ -296,30 +354,40 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Low cutoff slider
-    lowCutoff.setBounds(775, 170, 200, 50);
+    lowCutoff.textFromValueFunction = [](float value)
+    {
+        float lowCutoff = static_cast<float>(static_cast<int>(value * 1.f))/1.f;
+        return "Low Cutoff: " + juce::String(lowCutoff) + " Hz";
+    };
+    
+    lowCutoff.valueFromTextFunction = [](const juce::String &text)
+    {
+        float lowCutoff = text.removeCharacters("Low Cutoff: Hz").getFloatValue();
+        return lowCutoff;
+    };
+    lowCutoff.setBounds(775, 170, 200, 25);
     lowCutoff.setRange(20.0, 800.f);
-    lowCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    lowCutoff.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    lowCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     addAndMakeVisible(lowCutoff);
     lowCutoff.addListener(this);
     
-//    lowCutoff_label.setJustificationType(juce::Justification::centred);
-//    addAndMakeVisible(lowCutoff_label);
-//    lowCutoff_label.setText("Low Cutoff", juce::dontSendNotification);
-//    lowCutoff_label.attachToComponent(&lowCutoff, false);
-    
     // High cutoff slider
-    highCutoff.setBounds(775, 220, 200, 50);
+    highCutoff.textFromValueFunction = [](float value)
+    {
+        float highCutoff = static_cast<float>(static_cast<int>(value * 1.f))/1.f;
+        return "High Cutoff: " + juce::String(highCutoff) + " Hz";
+    };
+    
+    highCutoff.valueFromTextFunction = [](const juce::String &text)
+    {
+        float lowCutoff = text.removeCharacters("High Cutoff: Hz").getFloatValue();
+        return lowCutoff;
+    };
+    highCutoff.setBounds(775, 220, 200, 25);
     highCutoff.setRange(800.f, 8000.0);
-    highCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    highCutoff.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    highCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     addAndMakeVisible(highCutoff);
     highCutoff.addListener(this);
-    
-//    lowCutoff_label.setJustificationType(juce::Justification::centred);
-//    addAndMakeVisible(lowCutoff_label);
-//    lowCutoff_label.setText("Low Cutoff", juce::dontSendNotification);
-//    lowCutoff_label.attachToComponent(&lowCutoff, false);
     
     
     
