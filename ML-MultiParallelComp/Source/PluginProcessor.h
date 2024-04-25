@@ -81,6 +81,7 @@ public:
     float releaseBand3 = 0.f;
     
     float clipDrive = 1.f;
+    float clipDriveThreshold = 1.f;
     
 private:
     

@@ -22,10 +22,18 @@ public:
         this->drive = drive;
     }
     
-    float processSample_SoftClip(float x, float drive) {
+    void setClipperThreshold(float clipperThreshold) {
+        this->clipperThreshold = clipperThreshold;
+    }
+    
+    float processSample_SoftClip(float x, float drive, float clipperThreshold) {
         float xGain = x * drive;
-        float y = x - ( (1/3) * pow(xGain,3) ) + ( (1/5) * pow(xGain,5) );
-        return y;
+        if (xGain >= clipperThreshold) {
+            float y = x - ( (1/3) * pow(xGain,3) ) + ( (1/5) * pow(xGain,5) );
+            return y;
+        } else {
+            return xGain;
+        }
     }
     
     void setThreshold_band1(float threshold) {
@@ -265,7 +273,7 @@ public:
 //            samples[n] = LinkwitzLPFBuffer + LinkwitzHPFBuffer; // bypass compression
             
             float sumBands = comp1Band + comp2Band + comp3Band;
-            samples[n] = processSample_SoftClip(sumBands, drive);
+            samples[n] = processSample_SoftClip(sumBands, drive, clipperThreshold);
             
         }
     }
@@ -273,6 +281,7 @@ public:
 private:
     
     float drive = 1.f;
+    float clipperThreshold = 1.f; // linear
 
     float Fs = 48000.f;
     float Q = 0.7071;

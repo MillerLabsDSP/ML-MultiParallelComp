@@ -13,7 +13,33 @@
 MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor (MLMultiParallelCompAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    setSize(1000, 325);
+    setSize(1100, 340);
+    
+    
+    
+    /* ---------------------------- */
+    //          I/O GAIN            //
+    /* ---------------------------- */
+    
+    
+    
+    // Input gain slider
+    inputGain.setBounds(25, 30, 50, 275);
+    inputGain.setRange(-60, 6);
+    inputGain.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    inputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 70, 30);
+    inputGain.setNumDecimalPlacesToDisplay(2);
+    addAndMakeVisible(inputGain);
+    inputGain.addListener(this);
+    
+    // Input gain slider
+    outputGain.setBounds(1025, 30, 50, 275);
+    outputGain.setRange(-60, 6);
+    outputGain.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    outputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 70, 30);
+    outputGain.setNumDecimalPlacesToDisplay(2);
+    addAndMakeVisible(outputGain);
+    outputGain.addListener(this);
     
     
     
@@ -24,7 +50,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Threshold slider (band #1)
-    threshold_band1.setBounds(60, 30, 120, 120);
+    threshold_band1.setBounds(80, 30, 120, 120);
     threshold_band1.setRange(-50, 0);
     threshold_band1.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     threshold_band1.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
@@ -37,7 +63,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    threshold_band1_label.attachToComponent(&threshold_band1, true);
     
     // Ratio slider (band #1)
-    ratio_band1.setBounds(90, 170, 160, 25);
+    ratio_band1.setBounds(110, 170, 160, 25);
     ratio_band1.setRange(1, 10);
     ratio_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     ratio_band1.setTextBoxStyle(juce::Slider::NoTextBox, false, 75, 25);
@@ -49,7 +75,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    ratio_band1_label.attachToComponent(&ratio_band1, true);
     
     // Knee slider (band #1)
-    knee_band1.setBounds(90, 205, 160, 25);
+    knee_band1.setBounds(110, 205, 160, 25);
     knee_band1.setRange(0, 6);
     knee_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     knee_band1.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -61,7 +87,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    knee_band1_label.attachToComponent(&knee_band1, true);
     
     // Attack slider (band #1)
-    attack_band1.setBounds(90, 240, 160, 25);
+    attack_band1.setBounds(110, 240, 160, 25);
     attack_band1.setRange(0, 6);
     attack_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     attack_band1.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -73,7 +99,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    attack_band1_label.attachToComponent(&attack_band1, true);
     
     // Release slider (band #1)
-    release_band1.setBounds(90, 275, 160, 25);
+    release_band1.setBounds(110, 275, 160, 25);
     release_band1.setRange(0, 6);
     release_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     release_band1.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -85,7 +111,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    release_band1_label.attachToComponent(&release_band1, true);
     
     // Parallel blend slider (band #1)
-    parallel_band1.setBounds(170, 50, 100, 100);
+    parallel_band1.setBounds(190, 50, 100, 100);
     parallel_band1.setRange(0, 6);
     parallel_band1.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     parallel_band1.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
@@ -106,7 +132,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Threshold slider (band #2)
-    threshold_band2.setBounds(340, 30, 120, 120);
+    threshold_band2.setBounds(300, 30, 120, 120);
     threshold_band2.setRange(-50, 0);
     threshold_band2.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     threshold_band2.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
@@ -119,7 +145,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    threshold_band2_label.attachToComponent(&threshold_band2, true);
     
     // Ratio slider (band #2)
-    ratio_band2.setBounds(370, 170, 160, 25);
+    ratio_band2.setBounds(330, 170, 160, 25);
     ratio_band2.setRange(1, 10);
     ratio_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     ratio_band2.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -131,7 +157,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    ratio_band2_label.attachToComponent(&ratio_band2, true);
     
     // Knee slider (band #2)
-    knee_band2.setBounds(370, 205, 160, 25);
+    knee_band2.setBounds(330, 205, 160, 25);
     knee_band2.setRange(0, 6);
     knee_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     knee_band2.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -143,7 +169,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    knee_band2_label.attachToComponent(&knee_band2, true);
     
     // Attack slider (band #2)
-    attack_band2.setBounds(370, 240, 160, 25);
+    attack_band2.setBounds(330, 240, 160, 25);
     attack_band2.setRange(0, 6);
     attack_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     attack_band2.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -155,7 +181,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    attack_band2_label.attachToComponent(&attack_band2, true);
     
     // Release slider (band #2)
-    release_band2.setBounds(370, 275, 160, 25);
+    release_band2.setBounds(330, 275, 160, 25);
     release_band2.setRange(0, 6);
     release_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     release_band2.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -167,7 +193,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    release_band2_label.attachToComponent(&release_band2, true);
   
     // Parallel blend slider (band #2)
-    parallel_band2.setBounds(450, 50, 100, 100);
+    parallel_band2.setBounds(410, 50, 100, 100);
     parallel_band2.setRange(0, 6);
     parallel_band2.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     parallel_band2.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
@@ -188,7 +214,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Threshold slider (band #3)
-    threshold_band3.setBounds(620, 30, 120, 120);
+    threshold_band3.setBounds(520, 30, 120, 120);
     threshold_band3.setRange(-50, 0);
     threshold_band3.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     threshold_band3.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
@@ -201,7 +227,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    threshold_band2_label.attachToComponent(&threshold_band2, true);
     
     // Ratio slider (band #3)
-    ratio_band3.setBounds(650, 170, 160, 25);
+    ratio_band3.setBounds(550, 170, 160, 25);
     ratio_band3.setRange(1, 10);
     ratio_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     ratio_band3.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -213,7 +239,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    ratio_band2_label.attachToComponent(&ratio_band2, true);
     
     // Knee slider (band #3)
-    knee_band3.setBounds(650, 205, 160, 25);
+    knee_band3.setBounds(550, 205, 160, 25);
     knee_band3.setRange(0, 6);
     knee_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     knee_band3.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -225,7 +251,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    knee_band2_label.attachToComponent(&knee_band2, true);
     
     // Attack slider (band #3)
-    attack_band3.setBounds(650, 240, 160, 25);
+    attack_band3.setBounds(550, 240, 160, 25);
     attack_band3.setRange(0, 6);
     attack_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     attack_band3.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -237,7 +263,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    attack_band2_label.attachToComponent(&attack_band2, true);
     
     // Release slider (band #3)
-    release_band3.setBounds(650, 275, 160, 25);
+    release_band3.setBounds(550, 275, 160, 25);
     release_band3.setRange(0, 6);
     release_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     release_band3.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -249,7 +275,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    release_band2_label.attachToComponent(&release_band2, true);
   
     // Parallel blend slider (band #3)
-    parallel_band3.setBounds(730, 50, 100, 100);
+    parallel_band3.setBounds(630, 50, 100, 100);
     parallel_band3.setRange(0, 6);
     parallel_band3.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     parallel_band3.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
@@ -270,12 +296,25 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Low cutoff slider
-    lowCutoff.setBounds(30, 55, 50, 225);
+    lowCutoff.setBounds(775, 190, 200, 50);
     lowCutoff.setRange(20.0, 8000.0);
-    lowCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearBarVertical);
-    lowCutoff.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 200, 150);
-//    addAndMakeVisible(lowCutoff);
+    lowCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    lowCutoff.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    addAndMakeVisible(lowCutoff);
     lowCutoff.addListener(this);
+    
+//    lowCutoff_label.setJustificationType(juce::Justification::centred);
+//    addAndMakeVisible(lowCutoff_label);
+//    lowCutoff_label.setText("Low Cutoff", juce::dontSendNotification);
+//    lowCutoff_label.attachToComponent(&lowCutoff, false);
+    
+    // High cutoff slider
+    highCutoff.setBounds(775, 240, 200, 50);
+    highCutoff.setRange(20.0, 8000.0);
+    highCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    highCutoff.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    addAndMakeVisible(highCutoff);
+    highCutoff.addListener(this);
     
 //    lowCutoff_label.setJustificationType(juce::Justification::centred);
 //    addAndMakeVisible(lowCutoff_label);
@@ -291,23 +330,36 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Soft-clip button
-    softClip.setBounds(900, 180, 120, 120);
+    softClip.setBounds(825, 27, 120, 120);
     softClip.setButtonText("Soft Clip");
     softClip.setToggleState(false,juce::dontSendNotification);
-//    addAndMakeVisible(softClip);
+    addAndMakeVisible(softClip);
     softClip.addListener(this);
     
     // Soft-clip drive slider
-    clipDrive.setBounds(885, 90, 120, 120);
+    clipDrive.setBounds(780, 105, 90, 90);
     clipDrive.setRange(0, 10);
     clipDrive.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    clipDrive.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 75, 25);
-//    addAndMakeVisible(clipDrive);
+    clipDrive.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
+    addAndMakeVisible(clipDrive);
     clipDrive.addListener(this);
     
-    clipDrive_label.setJustificationType(juce::Justification::centred);
-    clipDrive_label.setText("Drive", juce::dontSendNotification);
-    clipDrive_label.attachToComponent(&clipDrive, false);
+//    clipDrive_label.setJustificationType(juce::Justification::centred);
+//    clipDrive_label.setText("Drive", juce::dontSendNotification);
+//    clipDrive_label.attachToComponent(&clipDrive, false);
+//    addAndMakeVisible(clipDrive_label);
+    
+    // Soft-clip threshold slider
+    clipDriveThreshold.setBounds(870, 105, 90, 90);
+    clipDriveThreshold.setRange(0, 10);
+    clipDriveThreshold.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    clipDriveThreshold.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
+    addAndMakeVisible(clipDriveThreshold);
+    clipDriveThreshold.addListener(this);
+    
+//    clipDrive_label.setJustificationType(juce::Justification::centred);
+//    clipDrive_label.setText("Drive", juce::dontSendNotification);
+//    clipDrive_label.attachToComponent(&clipDrive, false);
 //    addAndMakeVisible(clipDrive_label);
 
     
@@ -412,6 +464,10 @@ void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider *s
     
     if (slider == &clipDrive) {
         audioProcessor.clipDrive = clipDrive.getValue();
+    }
+    
+    if (slider == &clipDriveThreshold) {
+        audioProcessor.clipDriveThreshold = clipDriveThreshold.getValue();
     }
     
 }

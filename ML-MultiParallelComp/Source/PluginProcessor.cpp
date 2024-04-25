@@ -165,7 +165,7 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     
     // Distortion
     mbProcessor.setDrive(clipDrive);
-    
+    mbProcessor.setClipperThreshold(clipDriveThreshold);
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel) {
             

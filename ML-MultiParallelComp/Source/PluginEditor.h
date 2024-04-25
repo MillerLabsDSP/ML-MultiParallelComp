@@ -33,6 +33,9 @@ private:
     // access the processor object that created it.
     MLMultiParallelCompAudioProcessor& audioProcessor;
     
+    juce::Slider inputGain;
+    juce::Slider outputGain;
+    
     juce::Slider threshold_band1;
     juce::Label  threshold_band1_label;
     juce::Slider threshold_band2;
@@ -82,6 +85,7 @@ private:
      
     juce::ToggleButton softClip;
     juce::Slider clipDrive;
+    juce::Slider clipDriveThreshold;
     juce::Label  clipDrive_label;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MLMultiParallelCompAudioProcessorEditor)
