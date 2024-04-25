@@ -82,6 +82,8 @@ public:
     
     float clipDrive = 1000.f; // resistor value
     
+    bool clip = false;
+    
 private:
     
     MultibandProcessor          mbProcessor;

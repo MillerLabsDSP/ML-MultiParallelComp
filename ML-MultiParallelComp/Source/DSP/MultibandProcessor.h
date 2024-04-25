@@ -19,11 +19,11 @@ class MultibandProcessor : public Biquad, public PeakCompressor {
 public:
     
     void setResistorValue(float drive) {
-        this->drive = drive; // sets resistor value [1e-5 to 1e3 to inf]
+        this->R = drive; // sets resistor value [1e-5 to 1e3 to inf]
     }
     
     float processSample_SoftClip(float x, float drive) {
-        
+            
         // Diode pair emulation
         
         float fVd = 2*Is*sinh(Vd/etaVt) + Vd/R - x/R;
@@ -277,38 +277,34 @@ public:
             float comp2Band = process2CompSample(Linkwitz2Buffer, channel, T_band2, R_band2, W_band2, alphaA_band2, alphaR_band2);
             float comp3Band = process3CompSample(Linkwitz3Buffer, channel, T_band3, R_band3, W_band3, alphaA_band3, alphaR_band3);
             
-            float sumBands = comp1Band + comp2Band + comp3Band; // one sample
+            float sumBands = comp1Band + comp2Band + comp3Band;
             
-//            if (clip == true) {
-//                samples[n] = processSample_SoftClip(sumBands, drive);
-//            } else {
-//                samples[n] = sumBands;
-//            }
-            
-            samples[n] = sumBands;
-            
+            if (clip) {
+                samples[n] = sumBands;
+            } else {
+                float sumBands_clip = processSample_SoftClip(sumBands, R);
+                samples[n] = sumBands_clip;
+            }
         }
     }
     
+bool clip = false;
+
 private:
-    
-    float drive = 1.f; // resistor value
-    
+        
     // Diode pair soft clip parameters
-    float Is = 10e-9;
-    float Vt = 0.026;
-    float eta = 2;
-    float etaVt = eta*Vt;
+    const float Is = 10e-9;
+    const float Vt = 0.026;
+    const float eta = 1;
+    const float etaVt = eta*Vt;
     float R = 1e3;
     float Vd = 0;
     
-    float TOL = 1e-10; // diode guess tolerance
+    float TOL = 1e-18; // diode guess tolerance
 
     float Fs = 48000.f;
     float Q = 0.7071;
-    
-    bool clip = false;
-    
+        
     Biquad LPF1 {Biquad::FilterType::LPF, Q},
            LPF2 {Biquad::FilterType::LPF, Q},
            LPF3 {Biquad::FilterType::LPF, Q},

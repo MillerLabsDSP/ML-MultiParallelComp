@@ -83,10 +83,8 @@ private:
     juce::Slider highCutoff;
     juce::Label  highCutoff_label;
      
-    juce::ToggleButton softClip;
+    juce::ToggleButton clip;
     juce::Slider clipDrive;
-    juce::Slider clipDriveThreshold;
-    juce::Label  clipDrive_label;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MLMultiParallelCompAudioProcessorEditor)
 };
