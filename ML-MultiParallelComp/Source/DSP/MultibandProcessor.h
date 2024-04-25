@@ -18,12 +18,8 @@ class MultibandProcessor : public Biquad, public PeakCompressor {
 
 public:
     
-    void setDrive(float drive) {
-        this->drive = drive;
-    }
-    
-    void setClipperThreshold(float clipperThreshold) {
-        this->clipperThreshold = clipperThreshold;
+    void setResistorValue(float drive) {
+        this->drive = drive; // sets resistor value [1e-5 to 1e3 to inf]
     }
     
     float processSample_SoftClip(float x, float drive) {
@@ -128,25 +124,25 @@ public:
     float processSampleBand1(float x, int channel) {
         float a = LPF1.processSample(x, channel);
         float b = LPF2.processSample(a, channel);
-        float c = APF1.processSample(b, channel);
-        float d = APF2.processSample(c, channel);
-        return d;
+//        float c = APF1.processSample(b, channel);
+//        float d = APF2.processSample(c, channel);
+        return b;
     }
     
     float processSampleBand2(float x, int channel) {
-        float a = HPF1.processSample(x, channel);
-        float b = HPF2.processSample(a, channel);
-        float c = LPF3.processSample(b, channel);
-        float d = LPF4.processSample(c, channel);
-        return d;
+        float e = HPF1.processSample(x, channel);
+        float f = HPF2.processSample(e, channel);
+        float g = LPF3.processSample(f, channel);
+        float h = LPF4.processSample(g, channel);
+        return h;
     }
     
     float processSampleBand3(float x, int channel) {
-        float a = HPF1.processSample(x, channel);
-        float b = HPF2.processSample(a, channel);
-        float c = HPF3.processSample(b, channel);
-        float d = HPF4.processSample(c, channel);
-        return d;
+//        float k = HPF1.processSample(x, channel);
+//        float l = HPF2.processSample(k, channel);
+        float m = HPF3.processSample(x, channel);
+        float n = HPF4.processSample(m, channel);
+        return n;
     }
                                
     float process1CompSample(float x, int channel, float T_band1, float R_band1, float W_band1, float alphaA_band1, float alphaR_band1) {
@@ -236,7 +232,7 @@ public:
             x_dB = -96.f; // ensure no values of -inf
         }
         
-        // Band 2 compression
+        // Band 3 compression
         if (x_dB > T_band3 + (W_band3/2)) {
             // Above knee curve, compress
             gainSC_band3 = T_band3 + (x_dB - T_band3)/R_band3;
@@ -273,33 +269,30 @@ public:
             
             float x = samples[n];
             
-            float Linkwitz1Buffer = processSampleBand1(x, channel);
-            float Linkwitz2Buffer = processSampleBand2(x, channel);
-            float Linkwitz3Buffer = processSampleBand3(x, channel);
-            
+            float Linkwitz1Buffer = processSampleBand1(x, channel); // low band
+            float Linkwitz3Buffer = processSampleBand3(x, channel); // high band
+            float Linkwitz2Buffer = x - (Linkwitz1Buffer + Linkwitz3Buffer); // mid band
+                        
             float comp1Band = process1CompSample(Linkwitz1Buffer, channel, T_band1, R_band1, W_band1, alphaA_band1, alphaR_band1);
             float comp2Band = process2CompSample(Linkwitz2Buffer, channel, T_band2, R_band2, W_band2, alphaA_band2, alphaR_band2);
             float comp3Band = process3CompSample(Linkwitz3Buffer, channel, T_band3, R_band3, W_band3, alphaA_band3, alphaR_band3);
             
-            //            samples[n] = LinkwitzLPFBuffer // bypass high band
-            //            samples[n] = LinkwitzHPFBuffer // bypass low band
-            //            samples[n] = LinkwitzLPFBuffer + LinkwitzHPFBuffer; // bypass compression
+            float sumBands = comp1Band + comp2Band + comp3Band; // one sample
             
-            float sumBands = comp1Band + comp2Band + comp3Band;
+//            if (clip == true) {
+//                samples[n] = processSample_SoftClip(sumBands, drive);
+//            } else {
+//                samples[n] = sumBands;
+//            }
             
-            if (clip == true) {
-                samples[n] = processSample_SoftClip(sumBands, drive);
-            } else {
-                samples[n] = sumBands;
-            }
+            samples[n] = sumBands;
             
         }
     }
     
 private:
     
-    float drive = 1.f;
-    float clipperThreshold = 1.f; // linear
+    float drive = 1.f; // resistor value
     
     // Diode pair soft clip parameters
     float Is = 10e-9;

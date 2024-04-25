@@ -296,8 +296,8 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Low cutoff slider
-    lowCutoff.setBounds(775, 190, 200, 50);
-    lowCutoff.setRange(20.0, 8000.0);
+    lowCutoff.setBounds(775, 170, 200, 50);
+    lowCutoff.setRange(20.0, 800.f);
     lowCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     lowCutoff.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     addAndMakeVisible(lowCutoff);
@@ -309,8 +309,8 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    lowCutoff_label.attachToComponent(&lowCutoff, false);
     
     // High cutoff slider
-    highCutoff.setBounds(775, 240, 200, 50);
-    highCutoff.setRange(20.0, 8000.0);
+    highCutoff.setBounds(775, 220, 200, 50);
+    highCutoff.setRange(800.f, 8000.0);
     highCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     highCutoff.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     addAndMakeVisible(highCutoff);
@@ -330,14 +330,14 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Soft-clip button
-    softClip.setBounds(825, 27, 120, 120);
+    softClip.setBounds(785, 85, 90, 90);
     softClip.setButtonText("Soft Clip");
     softClip.setToggleState(false,juce::dontSendNotification);
     addAndMakeVisible(softClip);
     softClip.addListener(this);
     
     // Soft-clip drive slider
-    clipDrive.setBounds(780, 105, 90, 90);
+    clipDrive.setBounds(875, 85, 90, 90);
     clipDrive.setRange(0, 10);
     clipDrive.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     clipDrive.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
@@ -350,12 +350,12 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 //    addAndMakeVisible(clipDrive_label);
     
     // Soft-clip threshold slider
-    clipDriveThreshold.setBounds(870, 105, 90, 90);
-    clipDriveThreshold.setRange(0, 10);
-    clipDriveThreshold.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    clipDriveThreshold.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
-    addAndMakeVisible(clipDriveThreshold);
-    clipDriveThreshold.addListener(this);
+//    clipDriveThreshold.setBounds(870, 105, 90, 90);
+//    clipDriveThreshold.setRange(0, 10);
+//    clipDriveThreshold.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+//    clipDriveThreshold.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
+//    addAndMakeVisible(clipDriveThreshold);
+//    clipDriveThreshold.addListener(this);
     
 //    clipDrive_label.setJustificationType(juce::Justification::centred);
 //    clipDrive_label.setText("Drive", juce::dontSendNotification);
@@ -464,10 +464,6 @@ void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider *s
     
     if (slider == &clipDrive) {
         audioProcessor.clipDrive = clipDrive.getValue();
-    }
-    
-    if (slider == &clipDriveThreshold) {
-        audioProcessor.clipDriveThreshold = clipDriveThreshold.getValue();
     }
     
 }
