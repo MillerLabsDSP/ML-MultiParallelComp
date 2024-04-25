@@ -14,7 +14,7 @@
 MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor (MLMultiParallelCompAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    setSize(1100, 340);
+    setSize(975, 355);
     
     
     
@@ -25,7 +25,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Input gain slider
-    inputGain.setBounds(25, 30, 50, 275);
+    inputGain.setBounds(25, 45, 50, 275);
     inputGain.setRange(-60, 6);
     inputGain.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     inputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 70, 30);
@@ -34,7 +34,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     inputGain.addListener(this);
     
     // Input gain slider
-    outputGain.setBounds(1025, 30, 50, 275);
+    outputGain.setBounds(900, 45, 50, 275);
     outputGain.setRange(-60, 6);
     outputGain.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     outputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 70, 30);
@@ -365,7 +365,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
         float lowCutoff = text.removeCharacters("Low Cutoff: Hz").getFloatValue();
         return lowCutoff;
     };
-    lowCutoff.setBounds(775, 170, 200, 25);
+    lowCutoff.setBounds(110, 310, 295, 25);
     lowCutoff.setRange(20.0, 800.f);
     lowCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     addAndMakeVisible(lowCutoff);
@@ -383,7 +383,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
         float lowCutoff = text.removeCharacters("High Cutoff: Hz").getFloatValue();
         return lowCutoff;
     };
-    highCutoff.setBounds(775, 220, 200, 25);
+    highCutoff.setBounds(415, 310, 295, 25);
     highCutoff.setRange(800.f, 8000.0);
     highCutoff.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     addAndMakeVisible(highCutoff);
@@ -398,17 +398,17 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Soft-clip button
-    clip.setBounds(785, 85, 90, 90);
+    clip.setBounds(775, 200, 90, 90);
     clip.setButtonText("Soft Clip");
     clip.setToggleState(false,juce::dontSendNotification);
     addAndMakeVisible(clip);
     clip.addListener(this);
     
     // Soft-clip drive slider
-    clipDrive.setBounds(875, 85, 90, 90);
-    clipDrive.setRange(0.000001, 10000000);
+    clipDrive.setBounds(760, 95, 120, 120);
+    clipDrive.setRange(1, 10); // [0.000001, 10000000]
     clipDrive.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    clipDrive.setTextBoxStyle(juce::Slider::NoTextBox, true, 75, 25);
+    clipDrive.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 85, 25);
     addAndMakeVisible(clipDrive);
     clipDrive.addListener(this);
     
