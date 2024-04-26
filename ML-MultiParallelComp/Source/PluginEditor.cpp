@@ -16,6 +16,8 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
 {
     setSize(820, 420);
     
+    const juce::Colour linearBarColour = juce::Colours::grey;
+    
     
     
     /* ---------------------------- */
@@ -25,7 +27,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     // Input gain slider
-    inputGain.setBounds(25, 45, 50, 275);
+    inputGain.setBounds(25, 45, 50, 335);
     inputGain.setRange(-60, 6);
     inputGain.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     inputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 70, 30);
@@ -34,7 +36,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     inputGain.addListener(this);
     
     // Input gain slider
-    outputGain.setBounds(745, 45, 50, 275);
+    outputGain.setBounds(745, 45, 50, 335);
     outputGain.setRange(-60, 6);
     outputGain.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     outputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 70, 30);
@@ -75,6 +77,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     ratio_band1.setBounds(110, 170, 160, 25);
     ratio_band1.setRange(1, 100);
     ratio_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    ratio_band1.setColour(juce::Slider::trackColourId, linearBarColour);
     ratio_band1.setSkewFactorFromMidPoint(10.f);
     ratio_band1.setNumDecimalPlacesToDisplay(1);
     addAndMakeVisible(ratio_band1);
@@ -95,6 +98,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     knee_band1.setBounds(110, 205, 160, 25);
     knee_band1.setRange(0, 6);
     knee_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    knee_band1.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(knee_band1);
     knee_band1.addListener(this);
     
@@ -113,6 +117,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     attack_band1.setBounds(110, 240, 160, 25);
     attack_band1.setRange(0, 500);
     attack_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    attack_band1.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(attack_band1);
     attack_band1.addListener(this);
     
@@ -131,6 +136,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     release_band1.setBounds(110, 275, 160, 25);
     release_band1.setRange(0, 500);
     release_band1.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    release_band1.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(release_band1);
     attack_band1.addListener(this);
     
@@ -155,6 +161,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     threshold_band2.setBounds(300, 30, 120, 120);
     threshold_band2.setRange(-50, 0);
     threshold_band2.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    threshold_band2.setColour(juce::Slider::trackColourId, linearBarColour);
     threshold_band2.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
     threshold_band2.setNumDecimalPlacesToDisplay(2);
     addAndMakeVisible(threshold_band2);
@@ -176,6 +183,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     ratio_band2.setBounds(330, 170, 160, 25);
     ratio_band2.setRange(1, 100);
     ratio_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    ratio_band2.setColour(juce::Slider::trackColourId, linearBarColour);
     ratio_band2.setSkewFactorFromMidPoint(10.f);
     ratio_band2.setNumDecimalPlacesToDisplay(1);
     addAndMakeVisible(ratio_band2);
@@ -196,6 +204,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     knee_band2.setBounds(330, 205, 160, 25);
     knee_band2.setRange(0, 6);
     knee_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    knee_band2.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(knee_band2);
     knee_band2.addListener(this);
     
@@ -214,6 +223,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     attack_band2.setBounds(330, 240, 160, 25);
     attack_band2.setRange(0, 500);
     attack_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    attack_band2.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(attack_band2);
     attack_band2.addListener(this);
     
@@ -232,6 +242,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     release_band2.setBounds(330, 275, 160, 25);
     release_band2.setRange(0, 500);
     release_band2.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    release_band2.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(release_band2);
     release_band2.addListener(this);
       
@@ -277,6 +288,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     ratio_band3.setBounds(550, 170, 160, 25);
     ratio_band3.setRange(1, 100);
     ratio_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    ratio_band3.setColour(juce::Slider::trackColourId, linearBarColour);
     ratio_band3.setSkewFactorFromMidPoint(10.f);
     ratio_band3.setNumDecimalPlacesToDisplay(1);
     addAndMakeVisible(ratio_band3);
@@ -297,6 +309,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     knee_band3.setBounds(550, 205, 160, 25);
     knee_band3.setRange(0, 6);
     knee_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    knee_band3.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(knee_band3);
     knee_band3.addListener(this);
     
@@ -315,6 +328,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     attack_band3.setBounds(550, 240, 160, 25);
     attack_band3.setRange(0, 500);
     attack_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    attack_band3.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(attack_band3);
     attack_band3.addListener(this);
     
@@ -333,6 +347,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     release_band3.setBounds(550, 275, 160, 25);
     release_band3.setRange(0, 500);
     release_band3.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    release_band3.setColour(juce::Slider::trackColourId, linearBarColour);
     addAndMakeVisible(release_band3);
     release_band3.addListener(this);
 
@@ -437,7 +452,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
         float clipDriveMakeup = text.getFloatValue();
         return clipDriveMakeup;
     };
-    clipDriveMakeup.setBounds(460, 340, 160, 75);
+    clipDriveMakeup.setBounds(455, 340, 160, 75);
     clipDriveMakeup.setRange(1, 10); // [0.000001, 10000000]
     clipDriveMakeup.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     clipDriveMakeup.setTextBoxStyle(juce::Slider::TextBoxRight, true, 50, 25);

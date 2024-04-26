@@ -36,6 +36,16 @@ public:
          
         juce::Logger::outputDebugString (clip_label + " Button changed to " + stateString);
         clip->setButtonText (selectedString);
+        
+        if (clip->getToggleState() == false) {
+            clipDrive.setEnabled(false);
+            clipDriveMakeup.setEnabled(false);
+        }
+        if (clip->getToggleState() == true){
+            clipDrive.setEnabled(true);
+            clipDriveMakeup.setEnabled(true);
+        }
+
     }
     
 private:
