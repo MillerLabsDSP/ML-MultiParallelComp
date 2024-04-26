@@ -28,6 +28,16 @@ public:
     void sliderValueChanged(juce::Slider * slider) override;
     void buttonClicked (juce::Button* button) override;
     
+    void updateToggleState(juce::Button* clip, juce::String clip_label) {
+        auto state = clip->getToggleState();
+                
+        juce::String stateString    = state ? "ON" : "OFF";
+        juce::String selectedString = state ? "Clipping..." : "Soft Clip";
+         
+        juce::Logger::outputDebugString (clip_label + " Button changed to " + stateString);
+        clip->setButtonText (selectedString);
+    }
+    
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -83,8 +93,11 @@ private:
     juce::Slider highCutoff;
     juce::Label  highCutoff_label;
      
-    juce::ToggleButton clip;
+    juce::TextButton clip;
+    juce::Label clip_label;
+    
     juce::Slider clipDrive;
+    juce::Slider clipDriveMakeup;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MLMultiParallelCompAudioProcessorEditor)
 };

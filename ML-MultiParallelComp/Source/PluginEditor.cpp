@@ -14,7 +14,7 @@
 MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor (MLMultiParallelCompAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    setSize(975, 355);
+    setSize(820, 420);
     
     
     
@@ -34,7 +34,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     inputGain.addListener(this);
     
     // Input gain slider
-    outputGain.setBounds(900, 45, 50, 275);
+    outputGain.setBounds(745, 45, 50, 275);
     outputGain.setRange(-60, 6);
     outputGain.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     outputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 70, 30);
@@ -101,7 +101,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     // Attack slider (band #1)
     attack_band1.textFromValueFunction = [](float value)
     {
-        float attack = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        float attack = static_cast<float>(static_cast<int>(value * 100.f))/100.f;
         return "Attack: " + juce::String(attack) + " ms";
     };
     
@@ -380,8 +380,8 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     highCutoff.valueFromTextFunction = [](const juce::String &text)
     {
-        float lowCutoff = text.removeCharacters("High Cutoff: Hz").getFloatValue();
-        return lowCutoff;
+        float highCutoff = text.removeCharacters("High Cutoff: Hz").getFloatValue();
+        return highCutoff;
     };
     highCutoff.setBounds(415, 310, 295, 25);
     highCutoff.setRange(800.f, 8000.0);
@@ -397,25 +397,53 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
     
     
     
-    // Soft-clip button
-    clip.setBounds(775, 200, 90, 90);
+    // Diode pair clipper button
+    clip.setBounds(365, 365, 90, 25);
     clip.setButtonText("Soft Clip");
-    clip.setToggleState(false,juce::dontSendNotification);
+//    clip.setToggleState(false,juce::dontSendNotification);
+    clip.onClick = [this] { updateToggleState (&clip, "Soft Clip"); };
+    clip.setClickingTogglesState(true);
     addAndMakeVisible(clip);
     clip.addListener(this);
     
-    // Soft-clip drive slider
-    clipDrive.setBounds(760, 95, 120, 120);
+    // Diode pair clipper slider
+    clipDrive.textFromValueFunction = [](float value)
+    {
+        float clipDrive = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return juce::String(clipDrive);
+    };
+    
+    clipDrive.valueFromTextFunction = [](const juce::String &text)
+    {
+        float clipDrive = text.getFloatValue();
+        return clipDrive;
+    };
+    clipDrive.setBounds(205, 340, 160, 75);
     clipDrive.setRange(1, 10); // [0.000001, 10000000]
     clipDrive.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    clipDrive.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 85, 25);
+    clipDrive.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 50, 25);
     addAndMakeVisible(clipDrive);
     clipDrive.addListener(this);
     
-//    clipDrive_label.setJustificationType(juce::Justification::centred);
-//    clipDrive_label.setText("Drive", juce::dontSendNotification);
-//    clipDrive_label.attachToComponent(&clipDrive, false);
-//    addAndMakeVisible(clipDrive_label);
+    // Diode pair clipper makeup gain slider
+    clipDriveMakeup.textFromValueFunction = [](float value)
+    {
+        float clipDriveMakeup = static_cast<float>(static_cast<int>(value * 10.f))/10.f;
+        return juce::String(clipDriveMakeup);
+    };
+    
+    clipDriveMakeup.valueFromTextFunction = [](const juce::String &text)
+    {
+        float clipDriveMakeup = text.getFloatValue();
+        return clipDriveMakeup;
+    };
+    clipDriveMakeup.setBounds(460, 340, 160, 75);
+    clipDriveMakeup.setRange(1, 10); // [0.000001, 10000000]
+    clipDriveMakeup.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    clipDriveMakeup.setTextBoxStyle(juce::Slider::TextBoxRight, true, 50, 25);
+    addAndMakeVisible(clipDriveMakeup);
+    clipDriveMakeup.addListener(this);
+
 
 }
 
