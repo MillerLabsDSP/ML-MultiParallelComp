@@ -60,6 +60,9 @@ public:
     
     SharedImages* getSharedImagesPtr() { return m_pSharedImagesPtr; };
     
+    float inputGain = 0.f; // dB scale -> applied linearly in processBlock
+    float outputGain = 0.f;
+    
     float lowCutoff = 500.f;
     float highCutoff = 3000.f;
     
@@ -83,8 +86,8 @@ public:
     float releaseBand2 = 0.f;
     float releaseBand3 = 0.f;
     
-    float clipDrive = 1000.f; // resistor value
-    
+    float clipDrive = 1e-7f; // resistor value
+    float makeupGain = 1.f;
     bool clip = false;
     
 private:

@@ -18,11 +18,23 @@ class MultibandProcessor : public Biquad, public PeakCompressor {
 
 public:
     
+    void setInputGain(float inputGain) {
+        this->inGain = pow(20,inputGain/10);
+    }
+    
+    void setOutputGain(float outputGain) {
+        this->outGain = pow(20,outputGain/10);
+    }
+    
     void setResistorValue(float drive) {
         this->R = drive; // sets resistor value [1e-5 to 1e3 to inf]
     }
     
-    float processSample_SoftClip(float x, float drive) {
+    void setMakeupValue(float makeupGain) {
+        this->makeup = makeupGain;
+    }
+    
+    float processSample_SoftClip(float x) {
             
         // Diode pair emulation
         
@@ -41,7 +53,7 @@ public:
         float Vout = Vd;
         float y = Vout;
         
-        return y;
+        return y * makeup;
         
     }
     
@@ -267,7 +279,7 @@ public:
         updateCoefficients();
         for (int n = 0; n < numSamples ; n++){
             
-            float x = samples[n];
+            float x = samples[n] * inGain;
             
             float Linkwitz1Buffer = processSampleBand1(x, channel); // low band
             float Linkwitz3Buffer = processSampleBand3(x, channel); // high band
@@ -280,10 +292,10 @@ public:
             float sumBands = comp1Band + comp2Band + comp3Band;
             
             if (clip) {
-                samples[n] = sumBands;
+                samples[n] = sumBands * outGain;
             } else {
-                float sumBands_clip = processSample_SoftClip(sumBands, R);
-                samples[n] = sumBands_clip;
+                float sumBands_clip = processSample_SoftClip(sumBands);
+                samples[n] = sumBands_clip * outGain;
             }
         }
     }
@@ -295,15 +307,20 @@ private:
     // Diode pair soft clip parameters
     const float Is = 10e-9;
     const float Vt = 0.026;
-    const float eta = 1;
+    const float eta = 2;
     const float etaVt = eta*Vt;
-    float R = 1e3;
+    float R = 1e-7;
     float Vd = 0;
     
     float TOL = 1e-18; // diode guess tolerance
+    
+    float makeup = 1.f;
 
     float Fs = 48000.f;
     float Q = 0.7071;
+    
+    float inGain = 0.f;
+    float outGain = 0.f;
         
     Biquad LPF1 {Biquad::FilterType::LPF, Q},
            LPF2 {Biquad::FilterType::LPF, Q},

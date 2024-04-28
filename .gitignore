@@ -62,6 +62,6 @@ xcuserdata/*
 
 
 ### JUCE Ignores
-**/Builds/
-**/JuceLibraryCode/
-!**/JuceLibraryCode/AppConfig.h
+Builds/
+Assets/
+JuceLibraryCode/

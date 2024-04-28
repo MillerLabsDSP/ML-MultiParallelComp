@@ -440,7 +440,7 @@ MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor
         return clipDrive;
     };
     clipDrive.setBounds(205, 340, 160, 75);
-    clipDrive.setRange(1, 10); // [0.000001, 10000000]
+    clipDrive.setRange(1e-7, 1e7);
     clipDrive.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     clipDrive.setTextBoxStyle(juce::Slider::TextBoxLeft, true, 50, 25);
     addAndMakeVisible(clipDrive);
@@ -496,6 +496,14 @@ void MLMultiParallelCompAudioProcessorEditor::resized()
 }
 
 void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
+    
+    if (slider == &inputGain) {
+        audioProcessor.inputGain = inputGain.getValue();
+    }
+    
+    if (slider == &outputGain) {
+        audioProcessor.outputGain = outputGain.getValue();
+    }
     
     if (slider == &lowCutoff) {
         audioProcessor.lowCutoff = lowCutoff.getValue();
@@ -567,6 +575,10 @@ void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider *s
     
     if (slider == &clipDrive) {
         audioProcessor.clipDrive = clipDrive.getValue();
+    }
+    
+    if (slider == &clipDriveMakeup) {
+        audioProcessor.makeupGain = clipDriveMakeup.getValue();
     }
     
 }

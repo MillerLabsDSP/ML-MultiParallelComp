@@ -139,6 +139,9 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     mbProcessor.setLowCutoffFrequency(lowCutoff);
     mbProcessor.setHighCutoffFrequency(highCutoff);
     
+    mbProcessor.setInputGain(inputGain);
+    mbProcessor.setOutputGain(outputGain);
+    
     /* COMPRESSION PARAMETERS */
     
     // Compression (band #1)
@@ -165,8 +168,10 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     // Distortion
     if (clip) {
         mbProcessor.setResistorValue(clipDrive);
+        mbProcessor.setMakeupValue(makeupGain);
     } else {
-        mbProcessor.setResistorValue(0.00000001f);
+        mbProcessor.setResistorValue(1e-7f);
+        mbProcessor.setMakeupValue(1.f);
     }
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel) {
