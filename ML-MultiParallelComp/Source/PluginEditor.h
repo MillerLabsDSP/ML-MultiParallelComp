@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "GUI/MainComponent.h"
 
 //==============================================================================
 /**
@@ -52,6 +53,8 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     MLMultiParallelCompAudioProcessor& audioProcessor;
+    
+    MainComponent mainComponent;
     
     juce::Slider inputGain;
     juce::Slider outputGain;

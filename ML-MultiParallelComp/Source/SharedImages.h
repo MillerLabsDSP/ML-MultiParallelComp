@@ -22,12 +22,12 @@ public:
     
     juce::Image& getSmallKnobImage()    { return m_SmallKnob; };
     
-    juce::Image& getMedKnobImage()      { return m_MedKnob; };
+    juce::Image& getBigKnobImage()      { return m_BigKnob; };
     
 private:
     
     juce::Image m_BackgroundImage;
     juce::Image m_SmallKnob;
-    juce::Image m_MedKnob;
+    juce::Image m_BigKnob;
     
 };

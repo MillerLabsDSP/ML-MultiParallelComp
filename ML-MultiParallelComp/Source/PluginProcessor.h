@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "MultibandProcessor.h"
 #include "PeakCompressor.h"
+#include "SharedImages.h"
 
 //==============================================================================
 /**
@@ -57,6 +58,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     //==============================================================================
     
+    SharedImages* getSharedImagesPtr() { return m_pSharedImagesPtr; };
+    
     float lowCutoff = 500.f;
     float highCutoff = 3000.f;
     
@@ -85,6 +88,8 @@ public:
     bool clip = false;
     
 private:
+    
+    juce::SharedResourcePointer<SharedImages> m_pSharedImagesPtr;
     
     MultibandProcessor          mbProcessor;
     

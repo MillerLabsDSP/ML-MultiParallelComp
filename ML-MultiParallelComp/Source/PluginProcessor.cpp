@@ -96,7 +96,6 @@ void MLMultiParallelCompAudioProcessor::prepareToPlay (double sampleRate, int sa
 {
     mbProcessor.prepareToPlay(sampleRate);
 }
-
 void MLMultiParallelCompAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any

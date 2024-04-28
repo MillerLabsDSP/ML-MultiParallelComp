@@ -12,10 +12,10 @@
 
 void SharedImages::loadImages() {
     
-    m_BackgroundImage = juce::ImageCache::getFromMemory(BinaryData::bg_5_png, BinaryData::bg_5_pngSize);
+    m_BackgroundImage = juce::ImageCache::getFromMemory(BinaryData::bg_7_png, BinaryData::bg_7_pngSize);
     
     m_SmallKnob = juce::ImageCache::getFromMemory(BinaryData::Knob_small_png, BinaryData::Knob_small_pngSize);
     
-    m_MedKnob = juce::ImageCache::getFromMemory(BinaryData::Knob_middle_png, BinaryData::Knob_middle_pngSize);
+    m_BigKnob = juce::ImageCache::getFromMemory(BinaryData::Knob_big_png, BinaryData::Knob_big_pngSize);
 
 }

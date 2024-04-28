@@ -8,13 +8,19 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "GUI/MainComponent.h"
 #include <cmath>
 
 //==============================================================================
 MLMultiParallelCompAudioProcessorEditor::MLMultiParallelCompAudioProcessorEditor (MLMultiParallelCompAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+: AudioProcessorEditor (&p), audioProcessor (p), mainComponent(p)
 {
     setSize(820, 420);
+    
+    addAndMakeVisible(mainComponent);
+    
+    clipDrive.setEnabled(false);
+    clipDriveMakeup.setEnabled(false);
     
     const juce::Colour linearBarColour = juce::Colours::grey;
     
@@ -486,7 +492,7 @@ void MLMultiParallelCompAudioProcessorEditor::paint (juce::Graphics& g)
 
 void MLMultiParallelCompAudioProcessorEditor::resized()
 {
-
+    mainComponent.setBounds(0, 0, getWidth(), getHeight());
 }
 
 void MLMultiParallelCompAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
