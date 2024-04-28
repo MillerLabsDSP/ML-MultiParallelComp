@@ -173,6 +173,7 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     for (int channel = 0; channel < totalNumInputChannels; ++channel) {
             
         auto* channelData = buffer.getWritePointer (channel);
+        
         mbProcessor.processBuffer(channelData, numSamples, channel);
 
     }
