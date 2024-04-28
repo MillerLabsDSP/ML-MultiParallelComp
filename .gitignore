@@ -62,6 +62,6 @@ xcuserdata/*
 
 
 ### JUCE Ignores
-Builds/
-JuceLibraryCode/
-.DS_Store/
+/Builds
+/JuceLibraryCode
+/.DS_Store
