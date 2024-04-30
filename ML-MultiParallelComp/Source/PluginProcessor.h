@@ -166,6 +166,8 @@ public:
     
 private:
     
+    float gain = 1.f;
+    
     int ParameterVersionHint = 1;
     
     juce::SharedResourcePointer<SharedImages>       m_pSharedImagesPtr;

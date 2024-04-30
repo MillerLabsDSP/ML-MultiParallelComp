@@ -19,15 +19,15 @@ class MultibandProcessor : public Biquad, public PeakCompressor {
 public:
     
     void setInputGain(float inputGain) {
-        this->inGain = pow(20,inputGain/10);
+        this->inGain = std::pow(10,(inputGain/20));
     }
     
     void setOutputGain(float outputGain) {
-        this->outGain = pow(20,outputGain/10);
+        this->outGain = std::pow(10,(outputGain/20));
     }
     
     void setResistorValue(float drive) {
-        this->R = drive; // sets resistor value [1e-5 to 1e3 to inf]
+        this->R = drive;
     }
     
     void setMakeupValue(float makeupGain) {
@@ -295,8 +295,11 @@ public:
         updateCoefficients();
         for (int n = 0; n < numSamples ; n++){
             
-            float x = samples[n] * inGain;
+            smoothedInputGain = (smoothAlpha * smoothedInputGain) + ((1.f-smoothAlpha) * inGain);
+            smoothedOutputGain = (smoothAlpha * smoothedOutputGain) + ((1.f-smoothAlpha) * outGain);
             
+            float x = samples[n] * smoothedInputGain;
+                    
             float Linkwitz1Buffer = processSampleBand1(x, channel); // low band
             float Linkwitz3Buffer = processSampleBand3(x, channel); // high band
             float Linkwitz2Buffer = x - (Linkwitz1Buffer + Linkwitz3Buffer); // mid band
@@ -321,7 +324,10 @@ public:
 bool clip = false;
 
 private:
-        
+    
+    float smoothedInputGain = 0.f;
+    float smoothedOutputGain = 0.f;
+            
     // Diode pair soft clip parameters
     const float Is = 10e-9;
     const float Vt = 0.026;
@@ -337,8 +343,8 @@ private:
     float Fs = 48000.f;
     float Q = 0.7071;
     
-    float inGain = 0.f;
-    float outGain = 0.f;
+    float inGain = 1.f;
+    float outGain = 1.f;
         
     Biquad LPF1 {Biquad::FilterType::LPF, Q},
            LPF2 {Biquad::FilterType::LPF, Q},

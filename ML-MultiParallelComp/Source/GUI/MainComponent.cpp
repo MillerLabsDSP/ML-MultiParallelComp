@@ -33,7 +33,7 @@ void MainComponent::paint(juce::Graphics& g)
     int width = getWidth();
     int height = getHeight();
     
-    g.drawImage(m_pSharedImages->getBackgroundImage(), 0, 0, width, height, 0, 0, 3762, 1929);
+    g.drawImage(m_pSharedImages->getBackgroundImage(), 0, 0, width, height, 0, 0, 2809, 1443);
 }
 
 void MainComponent::resized()

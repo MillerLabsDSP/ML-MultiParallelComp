@@ -15,6 +15,7 @@ void PeakCompressor::prepareToPlay(double sampleRate) {
     if (sampleRate != Fs) {
         Fs = (float) sampleRate;
     }
+    smoothAlpha = std::exp(-std::log(9.f)/(sampleRate*respTime));
 }
 
 void PeakCompressor::setThreshold(float threshold) {

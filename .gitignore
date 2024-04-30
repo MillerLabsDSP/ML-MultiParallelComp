@@ -63,4 +63,5 @@ xcuserdata/*
 
 ### JUCE Ignores
 Builds/
+Assets/
 JuceLibraryCode/

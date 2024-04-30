@@ -23,6 +23,9 @@ public:
     void setAttack(float attackTime); // 1ms set [.01ms - 1s]
     void setRelease(float releaseTime); // 30ms set [1ms - 3s]
     
+    float respTime = 0.3f;
+    float smoothAlpha = 0.999f;
+    
 private:
     
     float Fs = -1.f;

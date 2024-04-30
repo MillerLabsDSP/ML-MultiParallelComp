@@ -12,7 +12,7 @@
 
 void SharedImages::loadImages() {
     
-    m_BackgroundImage = juce::ImageCache::getFromMemory(BinaryData::bg_7_png, BinaryData::bg_7_pngSize);
+    m_BackgroundImage = juce::ImageCache::getFromMemory(BinaryData::bg_7_labels_9_png, BinaryData::bg_7_labels_9_pngSize);
     
     m_SmallKnob = juce::ImageCache::getFromMemory(BinaryData::Knob_small_png, BinaryData::Knob_small_pngSize);
     
