@@ -9,6 +9,40 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+const juce::StringRef MLMultiParallelCompAudioProcessor::INPUTGAIN = "INPUTGAIN";
+const juce::StringRef MLMultiParallelCompAudioProcessor::OUTPUTGAIN = "OUTPUTGAIN";
+
+const juce::StringRef MLMultiParallelCompAudioProcessor::LINKWITZ1 = "LINKWITZ1";
+const juce::StringRef MLMultiParallelCompAudioProcessor::LINKWITZ2 = "LINKWITZ2";
+
+const juce::StringRef MLMultiParallelCompAudioProcessor::THRESHOLD_BAND1 = "THRESHOLD_BAND1";
+const juce::StringRef MLMultiParallelCompAudioProcessor::THRESHOLD_BAND2 = "THRESHOLD_BAND2";
+const juce::StringRef MLMultiParallelCompAudioProcessor::THRESHOLD_BAND3 = "THRESHOLD_BAND3";
+
+const juce::StringRef MLMultiParallelCompAudioProcessor::PARALLEL_BAND1 = "PARALLEL_BAND1";
+const juce::StringRef MLMultiParallelCompAudioProcessor::PARALLEL_BAND2 = "PARALLEL_BAND2";
+const juce::StringRef MLMultiParallelCompAudioProcessor::PARALLEL_BAND3 = "PARALLEL_BAND3";
+
+const juce::StringRef MLMultiParallelCompAudioProcessor::RATIO_BAND1 = "RATIO_BAND1";
+const juce::StringRef MLMultiParallelCompAudioProcessor::RATIO_BAND2 = "RATIO_BAND2";
+const juce::StringRef MLMultiParallelCompAudioProcessor::RATIO_BAND3 = "RATIO_BAND3";
+
+const juce::StringRef MLMultiParallelCompAudioProcessor::KNEE_BAND1 = "KNEE_BAND1";
+const juce::StringRef MLMultiParallelCompAudioProcessor::KNEE_BAND2 = "KNEE_BAND2";
+const juce::StringRef MLMultiParallelCompAudioProcessor::KNEE_BAND3 = "KNEE_BAND3";
+
+const juce::StringRef MLMultiParallelCompAudioProcessor::ATTACK_BAND1 = "ATTACK_BAND1";
+const juce::StringRef MLMultiParallelCompAudioProcessor::ATTACK_BAND2 = "ATTACK_BAND2";
+const juce::StringRef MLMultiParallelCompAudioProcessor::ATTACK_BAND3 = "ATTACK_BAND3";
+
+const juce::StringRef MLMultiParallelCompAudioProcessor::RELEASE_BAND1 = "RELEASE_BAND1";
+const juce::StringRef MLMultiParallelCompAudioProcessor::RELEASE_BAND2 = "RELEASE_BAND2";
+const juce::StringRef MLMultiParallelCompAudioProcessor::RELEASE_BAND3 = "RELEASE_BAND3";
+
+const juce::StringRef MLMultiParallelCompAudioProcessor::CLIPTOGGLEBUTTON = "CLIPTOGGLEBUTTON";
+const juce::StringRef MLMultiParallelCompAudioProcessor::MAKEUP = "MAKEUP";
+const juce::StringRef MLMultiParallelCompAudioProcessor::CLIPDRIVE = "CLIPDRIVE";
+
 //==============================================================================
 MLMultiParallelCompAudioProcessor::MLMultiParallelCompAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -19,16 +53,52 @@ MLMultiParallelCompAudioProcessor::MLMultiParallelCompAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
 #endif
-{
-    
+apvts(*this, nullptr, "Params", createParams()) {
     
 }
     MLMultiParallelCompAudioProcessor::~MLMultiParallelCompAudioProcessor()
 {
 }
 
+juce::AudioProcessorValueTreeState::ParameterLayout MLMultiParallelCompAudioProcessor::createParams() {
+    
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"INPUTGAIN", ParameterVersionHint}, "Input Gain", -48.f, 6.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"OUTPUTGAIN", ParameterVersionHint}, "Output Gain", -48.f, 6.f, 0.f));
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"LINKWITZ1", ParameterVersionHint}, "Low-Mid Crossover Frequency", 20.f, 800.f, 20.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"LINKWITZ2", ParameterVersionHint}, "Mid-High Crossover Frequency", 800.f, 8000.f, 800.f));
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"THRESHOLD_BAND1", ParameterVersionHint}, "Low Threshold", -50.f, 0.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"THRESHOLD_BAND2", ParameterVersionHint}, "Mid Threshold", -50.f, 0.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"THRESHOLD_BAND3", ParameterVersionHint}, "High Threshold", -50.f, 0.f, 0.f));
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RATIO_BAND1", ParameterVersionHint}, "Low Ratio", 1.f, 20.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RATIO_BAND2", ParameterVersionHint}, "Mid Ratio", 1.f, 20.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RATIO_BAND3", ParameterVersionHint}, "High Ratio", 1.f, 20.f, 0.f));
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND1", ParameterVersionHint}, "Low Knee", 0.f, 6.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND2", ParameterVersionHint}, "Mid Knee", 0.f, 6.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND3", ParameterVersionHint}, "High Knee", 0.f, 6.f, 0.f));
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND1", ParameterVersionHint}, "Low Attack", 0.f, 1.f, 0.01f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND2", ParameterVersionHint}, "Mid Attack", 0.f, 1.f, 0.01f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND3", ParameterVersionHint}, "High Attack", 0.f, 1.f, 0.01f));
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND1", ParameterVersionHint}, "Low Release", 0.f, 1.f, 0.25f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND2", ParameterVersionHint}, "Mid Release", 0.f, 1.f, 0.25f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND3", ParameterVersionHint}, "High Release", 0.f, 1.f, 0.25f));
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"CLIPDRIVE", ParameterVersionHint}, "Clipper Drive", 1e-7f, 1e7f, 1e-7f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"MAKEUP", ParameterVersionHint}, "Clipper Makeup Gain", 1.f, 10.f, 1.f));
+    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"CLIPTOGGLEBUTTON", ParameterVersionHint}, "Clip Toggle", false));
+    
+    return { params.begin(), params.end() };
+    
+}
 //==============================================================================
 const juce::String MLMultiParallelCompAudioProcessor::getName() const
 {
@@ -165,14 +235,15 @@ void MLMultiParallelCompAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     mbProcessor.setAttack_band3(attackBand3);
     mbProcessor.setRelease_band3(releaseBand3);
     
+    // Parallel readdition
+    mbProcessor.setParallel_1(parallel1Val);
+    mbProcessor.setParallel_2(parallel2Val);
+    mbProcessor.setParallel_3(parallel3Val);
+    
     // Distortion
-    if (clip) {
-        mbProcessor.setResistorValue(clipDrive);
-        mbProcessor.setMakeupValue(makeupGain);
-    } else {
-        mbProcessor.setResistorValue(1e-7f);
-        mbProcessor.setMakeupValue(1.f);
-    }
+    mbProcessor.setResistorValue(clipDrive);
+    mbProcessor.setMakeupValue(makeupGain);
+    mbProcessor.setClipState(clip);
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel) {
             
@@ -198,15 +269,125 @@ juce::AudioProcessorEditor* MLMultiParallelCompAudioProcessor::createEditor()
 //==============================================================================
 void MLMultiParallelCompAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    
+    auto currentState = apvts.copyState();
+    std::unique_ptr<juce::XmlElement> xml (currentState.createXml());
+    copyXmlToBinary(*xml, destData);
+    
 }
 
 void MLMultiParallelCompAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    
+    getXmlFromBinary(data, sizeInBytes);
+    std::unique_ptr<juce::XmlElement> xml (getXmlFromBinary(data, sizeInBytes));
+    juce::ValueTree newTree = juce::ValueTree::fromXml(*xml);
+    apvts.replaceState(newTree);
+    
+}
+
+void MLMultiParallelCompAudioProcessor::inputGainChanged(float value) {
+    inputGain = value;
+}
+
+void MLMultiParallelCompAudioProcessor::outputGainChanged(float value) {
+    outputGain = value;
+}
+
+void MLMultiParallelCompAudioProcessor::lowCutoffChanged(float value) {
+    lowCutoff = value;
+}
+
+void MLMultiParallelCompAudioProcessor::highCutoffChanged(float value) {
+    highCutoff = value;
+}
+
+void MLMultiParallelCompAudioProcessor::thresholdBand1Changed(float value) {
+    thresholdBand1 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::thresholdBand2Changed(float value) {
+    thresholdBand2 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::thresholdBand3Changed(float value) {
+    thresholdBand3 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::parallelBand1Changed(float value) {
+    parallel1Val = value;
+}
+
+void MLMultiParallelCompAudioProcessor::parallelBand2Changed(float value) {
+    parallel2Val = value;
+}
+
+void MLMultiParallelCompAudioProcessor::parallelBand3Changed(float value) {
+    parallel3Val = value;
+}
+
+void MLMultiParallelCompAudioProcessor::ratioBand1Changed(float value) {
+    ratioBand1 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::ratioBand2Changed(float value) {
+    ratioBand2 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::ratioBand3Changed(float value) {
+    ratioBand3 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::kneeBand1Changed(float value) {
+    kneeBand1 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::kneeBand2Changed(float value) {
+    kneeBand2 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::kneeBand3Changed(float value) {
+    kneeBand3 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::attackBand1Changed(float value) {
+    attackBand1 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::attackBand2Changed(float value) {
+    attackBand2 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::attackBand3Changed(float value) {
+    attackBand3 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::releaseBand1Changed(float value) {
+    releaseBand1 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::releaseBand2Changed(float value) {
+    releaseBand2 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::releaseBand3Changed(float value) {
+    releaseBand3 = value;
+}
+
+void MLMultiParallelCompAudioProcessor::clipButtonToggled(bool state) {
+    clip = state;
+//    if (state == false) {
+//        clipDrive = 1e-7;
+//        makeupGain = 1;
+//    }
+}
+
+void MLMultiParallelCompAudioProcessor::clipMakeupChanged(float value) {
+    makeupGain = value;
+}
+
+void MLMultiParallelCompAudioProcessor::clipDriveChanged(float value) {
+    clipDrive = value;
 }
 
 //==============================================================================

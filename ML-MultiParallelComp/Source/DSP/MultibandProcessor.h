@@ -34,6 +34,10 @@ public:
         this->makeup = makeupGain;
     }
     
+    void setClipState(bool state) {
+        this->clip = state;
+    }
+    
     float processSample_SoftClip(float x) {
             
         // Diode pair emulation
@@ -55,6 +59,18 @@ public:
         
         return y * makeup;
         
+    }
+    
+    void setParallel_1(float parallel) {
+        this->parallelBlend1 = parallel;
+    }
+    
+    void setParallel_2(float parallel) {
+        this->parallelBlend2 = parallel;
+    }
+    
+    void setParallel_3(float parallel) {
+        this->parallelBlend3 = parallel;
     }
     
     void setThreshold_band1(float threshold) {
@@ -289,16 +305,18 @@ public:
             float comp2Band = process2CompSample(Linkwitz2Buffer, channel, T_band2, R_band2, W_band2, alphaA_band2, alphaR_band2);
             float comp3Band = process3CompSample(Linkwitz3Buffer, channel, T_band3, R_band3, W_band3, alphaA_band3, alphaR_band3);
             
-            float sumBands = comp1Band + comp2Band + comp3Band;
+            float sumBands = x + (comp1Band * parallelBlend1) + (comp2Band * parallelBlend2) + (comp3Band * parallelBlend3);
+            float sumBandsClip = processSample_SoftClip(sumBands);
             
-            if (clip) {
-                samples[n] = sumBands * outGain;
+            if (clip == true) {
+                samples[n] = sumBandsClip * outGain;
             } else {
-                float sumBands_clip = processSample_SoftClip(sumBands);
-                samples[n] = sumBands_clip * outGain;
+                samples[n] = sumBands * outGain;
             }
+        
         }
     }
+
     
 bool clip = false;
 
@@ -334,6 +352,10 @@ private:
            HPF4 {Biquad::FilterType::HPF, Q};
                          
     /* Compressor parameters for individual bands */
+    
+    float parallelBlend1 = 0.f;
+    float parallelBlend2 = 0.f;
+    float parallelBlend3 = 0.f;
     
     float T_band1 = 0.f;
     float T_band2 = 0.f;

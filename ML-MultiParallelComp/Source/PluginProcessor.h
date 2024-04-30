@@ -56,7 +56,8 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-    //==============================================================================
+    
+    juce::AudioProcessorValueTreeState apvts;
     
     SharedImages* getSharedImagesPtr() { return m_pSharedImagesPtr; };
     
@@ -86,15 +87,91 @@ public:
     float releaseBand2 = 0.f;
     float releaseBand3 = 0.f;
     
+    float parallel1Val = 0.f;
+    float parallel2Val = 0.f;
+    float parallel3Val = 0.f;
+    
     float clipDrive = 1e-7f; // resistor value
     float makeupGain = 1.f;
     bool clip = false;
     
+    static const juce::StringRef INPUTGAIN;
+    static const juce::StringRef OUTPUTGAIN;
+    
+    static const juce::StringRef LINKWITZ1;
+    static const juce::StringRef LINKWITZ2;
+    
+    static const juce::StringRef THRESHOLD_BAND1;
+    static const juce::StringRef THRESHOLD_BAND2;
+    static const juce::StringRef THRESHOLD_BAND3;
+    
+    static const juce::StringRef PARALLEL_BAND1;
+    static const juce::StringRef PARALLEL_BAND2;
+    static const juce::StringRef PARALLEL_BAND3;
+    
+    static const juce::StringRef RATIO_BAND1;
+    static const juce::StringRef RATIO_BAND2;
+    static const juce::StringRef RATIO_BAND3;
+    
+    static const juce::StringRef KNEE_BAND1;
+    static const juce::StringRef KNEE_BAND2;
+    static const juce::StringRef KNEE_BAND3;
+    
+    static const juce::StringRef ATTACK_BAND1;
+    static const juce::StringRef ATTACK_BAND2;
+    static const juce::StringRef ATTACK_BAND3;
+    
+    static const juce::StringRef RELEASE_BAND1;
+    static const juce::StringRef RELEASE_BAND2;
+    static const juce::StringRef RELEASE_BAND3;
+    
+    static const juce::StringRef CLIPDRIVE;
+    static const juce::StringRef MAKEUP;
+    static const juce::StringRef CLIPTOGGLEBUTTON;
+    
+    void inputGainChanged(float value);
+    void outputGainChanged(float value);
+    
+    void lowCutoffChanged(float value);
+    void highCutoffChanged(float value);
+    
+    void thresholdBand1Changed(float value);
+    void thresholdBand2Changed(float value);
+    void thresholdBand3Changed(float value);
+    
+    void parallelBand1Changed(float value);
+    void parallelBand2Changed(float value);
+    void parallelBand3Changed(float value);
+    
+    void ratioBand1Changed(float value);
+    void ratioBand2Changed(float value);
+    void ratioBand3Changed(float value);
+    
+    void kneeBand1Changed(float value);
+    void kneeBand2Changed(float value);
+    void kneeBand3Changed(float value);
+    
+    void attackBand1Changed(float value);
+    void attackBand2Changed(float value);
+    void attackBand3Changed(float value);
+    
+    void releaseBand1Changed(float value);
+    void releaseBand2Changed(float value);
+    void releaseBand3Changed(float value);
+    
+    void clipButtonToggled(bool state);
+    void clipDriveChanged(float value);
+    void clipMakeupChanged(float value);
+
+    
 private:
     
-    juce::SharedResourcePointer<SharedImages> m_pSharedImagesPtr;
+    int ParameterVersionHint = 1;
     
-    MultibandProcessor          mbProcessor;
+    juce::SharedResourcePointer<SharedImages>       m_pSharedImagesPtr;
+    MultibandProcessor                              mbProcessor;
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout createParams();
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MLMultiParallelCompAudioProcessor)

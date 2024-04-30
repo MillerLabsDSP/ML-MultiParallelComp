@@ -16,42 +16,41 @@
 /**
  
  */
-class MLMultiParallelCompAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Slider::Listener, public juce::Button::Listener
+class MLMultiParallelCompAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
+    
+    using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+    using ButtonAttachment = juce::AudioProcessorValueTreeState::ButtonAttachment;
+    
     MLMultiParallelCompAudioProcessorEditor (MLMultiParallelCompAudioProcessor&);
     ~MLMultiParallelCompAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    
-    void sliderValueChanged(juce::Slider * slider) override;
-    void buttonClicked (juce::Button* button) override;
-    
+        
     void updateToggleState(juce::Button* clip, juce::String clip_label) {
         auto state = clip->getToggleState();
                 
         juce::String stateString    = state ? "ON" : "OFF";
         juce::String selectedString = state ? "Clipping..." : "Soft Clip";
-         
-        juce::Logger::outputDebugString (clip_label + " Button changed to " + stateString);
-        clip->setButtonText (selectedString);
         
-        if (clip->getToggleState() == false) {
+        if (state == false) {
             clipDrive.setEnabled(false);
             clipDriveMakeup.setEnabled(false);
         }
-        if (clip->getToggleState() == true){
+        if (state == true){
             clipDrive.setEnabled(true);
             clipDriveMakeup.setEnabled(true);
         }
+         
+        clip->setButtonText (selectedString);
 
     }
     
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
+
     MLMultiParallelCompAudioProcessor& audioProcessor;
     
     MainComponent mainComponent;
@@ -111,6 +110,9 @@ private:
     
     juce::Slider clipDrive;
     juce::Slider clipDriveMakeup;
+    
+    std::vector<std::unique_ptr<SliderAttachment>> sliderAttachments;
+    std::vector<std::unique_ptr<ButtonAttachment>> buttonAttachments;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MLMultiParallelCompAudioProcessorEditor)
 };
