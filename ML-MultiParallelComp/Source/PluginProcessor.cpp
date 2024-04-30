@@ -84,17 +84,17 @@ juce::AudioProcessorValueTreeState::ParameterLayout MLMultiParallelCompAudioProc
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RATIO_BAND2", ParameterVersionHint}, "Mid Ratio", juce::NormalisableRange<float>(2.f, 20.f, 0.1f), 2.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RATIO_BAND3", ParameterVersionHint}, "High Ratio", juce::NormalisableRange<float>(2.f, 20.f, 0.1f), 2.f));
     
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND1", ParameterVersionHint}, "Low Knee", 0.f, 6.f, 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND2", ParameterVersionHint}, "Mid Knee", 0.f, 6.f, 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND3", ParameterVersionHint}, "High Knee", 0.f, 6.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND1", ParameterVersionHint}, "Low Knee", 0.f, 18.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND2", ParameterVersionHint}, "Mid Knee", 0.f, 18.f, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"KNEE_BAND3", ParameterVersionHint}, "High Knee", 0.f, 18.f, 0.f));
     
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND1", ParameterVersionHint}, "Low Attack", 0.f, 1.f, 0.01f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND2", ParameterVersionHint}, "Mid Attack", 0.f, 1.f, 0.01f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND3", ParameterVersionHint}, "High Attack", 0.f, 1.f, 0.01f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND1", ParameterVersionHint}, "Low Attack", juce::NormalisableRange<float>(0.01f, 500.f, 0.01f), 2.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND2", ParameterVersionHint}, "Mid Attack", juce::NormalisableRange<float>(0.01f, 500.f, 0.01f), 2.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"ATTACK_BAND3", ParameterVersionHint}, "High Attack", juce::NormalisableRange<float>(0.01f, 500.f, 0.01f), 2.f));
     
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND1", ParameterVersionHint}, "Low Release", 0.f, 1.f, 0.25f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND2", ParameterVersionHint}, "Mid Release", 0.f, 1.f, 0.25f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND3", ParameterVersionHint}, "High Release", 0.f, 1.f, 0.25f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND1", ParameterVersionHint}, "Low Release", juce::NormalisableRange<float>(0.1f, 1000.f, 0.01f), 30.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND2", ParameterVersionHint}, "Mid Release", juce::NormalisableRange<float>(0.1f, 1000.f, 0.01f), 30.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND3", ParameterVersionHint}, "High Release", juce::NormalisableRange<float>(0.1f, 1000.f, 0.01f), 30.f));
     
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"CLIPDRIVE", ParameterVersionHint}, "Clipper Drive",juce::NormalisableRange<float>(1e-7f, 1e7f, 100.f), 1e-7f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"MAKEUP", ParameterVersionHint}, "Clipper Makeup Gain", juce::NormalisableRange<float>(1.f, 10.f, 0.1f), 1.f));

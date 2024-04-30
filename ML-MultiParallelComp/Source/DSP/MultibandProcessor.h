@@ -222,7 +222,7 @@ public:
         }
         
         // Band 2 compression
-        if (x_dB > T_band2 + (W_band1/2)) {
+        if (x_dB > T_band2 + (W_band2/2)) {
             // Above knee curve, compress
             gainSC_band2 = T_band2 + (x_dB - T_band2)/R_band2;
         } else if (x_dB > (T_band2 - W_band2/2)) {
