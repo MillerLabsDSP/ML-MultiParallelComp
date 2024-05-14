@@ -96,7 +96,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MLMultiParallelCompAudioProc
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND2", ParameterVersionHint}, "Mid Release", juce::NormalisableRange<float>(0.1f, 1000.f, 0.01f), 30.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"RELEASE_BAND3", ParameterVersionHint}, "High Release", juce::NormalisableRange<float>(0.1f, 1000.f, 0.01f), 30.f));
     
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"CLIPDRIVE", ParameterVersionHint}, "Clipper Drive",juce::NormalisableRange<float>(1e-7f, 1e7f, 100.f), 1e-7f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"CLIPDRIVE", ParameterVersionHint}, "Clipper Drive",juce::NormalisableRange<float>(1e-7f, 1e3f, 0.1f), 1e-7f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"MAKEUP", ParameterVersionHint}, "Clipper Makeup Gain", juce::NormalisableRange<float>(1.f, 10.f, 0.1f), 1.f));
     params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"CLIPTOGGLEBUTTON", ParameterVersionHint}, "Clip Toggle", false));
     
